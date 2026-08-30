@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Social Generator Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#aacdce",
+                        "on-surface": "#191c20",
+                        "surface-dim": "#d9dadf",
+                        "secondary-container": "#cbe4e6",
+                        "on-tertiary-fixed-variant": "#3e494a",
+                        "inverse-surface": "#2e3035",
+                        "on-secondary-container": "#506769",
+                        "on-tertiary-container": "#7f8b8c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#344b4d",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#aacdce",
+                        "surface-container-highest": "#e2e2e8",
+                        "on-primary-container": "#6d8f90",
+                        "secondary-fixed-dim": "#b2cbcd",
+                        "surface-container-low": "#f3f3f9",
+                        "surface-container-high": "#e7e8ee",
+                        "tertiary-fixed-dim": "#bdc9ca",
+                        "surface-tint": "#436465",
+                        "tertiary": "#030c0d",
+                        "background": "#f9f9ff",
+                        "tertiary-fixed": "#d9e5e6",
+                        "surface": "#f9f9ff",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e2e2e8",
+                        "inverse-on-surface": "#f0f0f6",
+                        "on-surface-variant": "#414848",
+                        "tertiary-container": "#182324",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#ededf3",
+                        "on-primary-fixed": "#002021",
+                        "secondary": "#4b6264",
+                        "on-primary-fixed-variant": "#2b4c4d",
+                        "primary-container": "#002627",
+                        "on-background": "#191c20",
+                        "primary-fixed": "#c5e9ea",
+                        "error-container": "#ffdad6",
+                        "outline": "#717878",
+                        "outline-variant": "#c1c8c8",
+                        "primary": "#000d0d",
+                        "secondary-fixed": "#cee7e9",
+                        "on-secondary-fixed": "#071f21",
+                        "on-tertiary-fixed": "#131d1e",
+                        "surface-bright": "#f9f9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1120px",
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "label-md": ["Hanken Grotesk"],
+                        "headline-lg": ["\"Source Serif 4\""],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["\"Source Serif 4\""]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f0f0f6; display: flex; justify-content: flex-end; min-height: 100vh; margin: 0; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<aside class="w-full md:w-[420px] bg-surface h-screen border-l border-outline-variant flex flex-col shadow-sm">
+<!-- Header -->
+<div class="px-gutter pt-8 pb-6 border-b border-outline-variant flex-shrink-0">
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Social Generator</h2>
+<p class="font-body-md text-body-md text-on-surface-variant truncate" title="The Art of Deep Work: Finding Focus in a Distracted World">The Art of Deep Work: Finding Focus in a Distracted...</p>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto hide-scrollbar px-gutter py-6 flex flex-col gap-8">
+<!-- Platforms -->
+<section class="flex flex-col gap-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Platform</span>
+<div class="flex items-center gap-6 border-b border-outline-variant pb-[1px]">
+<button class="pb-2 border-b-2 border-primary-container text-primary-container font-label-md text-label-md">Instagram</button>
+<button class="pb-2 border-b-2 border-transparent hover:text-on-surface text-on-surface-variant font-label-md text-label-md transition-colors">LinkedIn</button>
+<button class="pb-2 border-b-2 border-transparent hover:text-on-surface text-on-surface-variant font-label-md text-label-md transition-colors">X</button>
+<button class="pb-2 border-b-2 border-transparent hover:text-on-surface text-on-surface-variant font-label-md text-label-md transition-colors">Facebook</button>
+</div>
+</section>
+<!-- Image Source & Preview -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center gap-2 bg-surface-container p-1 rounded-full w-fit">
+<button class="px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md shadow-sm transition-all">Featured</button>
+<button class="px-4 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all">Generated</button>
+</div>
+<div class="aspect-[4/3] w-full rounded-lg border border-outline-variant overflow-hidden bg-surface-container-low">
+<img alt="Social preview image" class="w-full h-full object-cover" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+</div>
+</section>
+<!-- Caption -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface">Caption</span>
+<button class="flex items-center gap-1.5 text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span class="font-label-md text-label-md">Regenerate</span>
+</button>
+</div>
+<textarea class="w-full h-32 p-4 rounded-lg border border-outline-variant bg-transparent resize-none font-body-md text-body-md text-on-surface focus:border-primary-container focus:ring-0 transition-colors" placeholder="Generated caption will appear here...">In a world of constant pings and notifications, true productivity isn't about doing more, it's about going deeper. The art of deep work requires intentional isolation and dedicated blocks of time. When we carve out space for uninterrupted focus, we unlock our highest creative potential. Protect your attention—it is your most valuable asset.</textarea>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full font-label-sm text-label-sm hover:bg-surface-container cursor-pointer transition-colors">#DeepWork</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full font-label-sm text-label-sm hover:bg-surface-container cursor-pointer transition-colors">#Focus</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full font-label-sm text-label-sm hover:bg-surface-container cursor-pointer transition-colors">#Productivity</span>
+</div>
+</section>
+</div>
+<!-- Footer Actions -->
+<div class="p-gutter border-t border-outline-variant flex-shrink-0 bg-surface flex flex-col gap-3">
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary-container hover:opacity-90 py-3 rounded-full font-label-md text-label-md transition-opacity">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+                Copy Caption
+            </button>
+<div class="flex items-center gap-3">
+<button class="flex-1 flex items-center justify-center gap-2 border border-primary-container text-primary-container hover:bg-surface-container-low py-2.5 rounded-full font-label-md text-label-md transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                    Image
+                </button>
+<button class="flex-1 flex items-center justify-center gap-2 border border-primary-container text-primary-container hover:bg-surface-container-low py-2.5 rounded-full font-label-md text-label-md transition-colors">
+<span class="material-symbols-outlined text-[20px]">bookmark</span>
+                    Save
+                </button>
+</div>
+</div>
+</aside>
+</body></html>

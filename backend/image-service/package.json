@@ -1,0 +1,20 @@
+{
+  "name": "quiet-authority-image-service",
+  "version": "1.0.0",
+  "description": "Standalone microservice wrapping pexelkit — FastAPI calls this over HTTP.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pexelkit": "^0.4.0",
+    "dotenv": "^16.4.5",
+    "cors": "^2.8.5"
+  },
+  "overrides": {
+    "sharp": "^0.35.4"
+  }
+}

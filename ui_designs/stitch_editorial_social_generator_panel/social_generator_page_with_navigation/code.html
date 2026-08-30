@@ -1,0 +1,245 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Social Generator</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Source+Serif+4:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "primary-fixed-dim": "#aacdce",
+                            "primary-fixed": "#c5e9ea",
+                            "on-secondary-fixed": "#071f21",
+                            "surface": "#f9f9ff",
+                            "on-tertiary": "#ffffff",
+                            "surface-container-high": "#e7e8ee",
+                            "tertiary-fixed-dim": "#bdc9ca",
+                            "surface-variant": "#e2e2e8",
+                            "secondary": "#4b6264",
+                            "inverse-primary": "#aacdce",
+                            "on-tertiary-fixed-variant": "#3e494a",
+                            "on-primary-container": "#6d8f90",
+                            "tertiary-container": "#182324",
+                            "secondary-fixed-dim": "#b2cbcd",
+                            "outline-variant": "#c1c8c8",
+                            "surface-dim": "#d9dadf",
+                            "on-surface": "#191c20",
+                            "on-primary-fixed-variant": "#2b4c4d",
+                            "inverse-on-surface": "#f0f0f6",
+                            "surface-bright": "#f9f9ff",
+                            "on-background": "#191c20",
+                            "tertiary": "#030c0d",
+                            "surface-container-lowest": "#ffffff",
+                            "secondary-fixed": "#cee7e9",
+                            "on-secondary-fixed-variant": "#344b4d",
+                            "secondary-container": "#cbe4e6",
+                            "on-error": "#ffffff",
+                            "on-primary-fixed": "#002021",
+                            "on-secondary": "#ffffff",
+                            "on-tertiary-container": "#7f8b8c",
+                            "on-error-container": "#93000a",
+                            "inverse-surface": "#2e3035",
+                            "surface-container": "#ededf3",
+                            "on-primary": "#ffffff",
+                            "error-container": "#ffdad6",
+                            "on-secondary-container": "#506769",
+                            "surface-container-low": "#f3f3f9",
+                            "surface-tint": "#436465",
+                            "on-surface-variant": "#414848",
+                            "surface-container-highest": "#e2e2e8",
+                            "primary": "#000d0d",
+                            "error": "#ba1a1a",
+                            "on-tertiary-fixed": "#131d1e",
+                            "background": "#f9f9ff",
+                            "primary-container": "#002627",
+                            "tertiary-fixed": "#d9e5e6",
+                            "outline": "#717878"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.125rem",
+                            "lg": "0.25rem",
+                            "xl": "0.5rem",
+                            "full": "0.75rem"
+                    },
+                    "spacing": {
+                            "unit": "4px",
+                            "margin-mobile": "20px",
+                            "container-max": "1120px",
+                            "gutter": "24px",
+                            "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                            "body-lg": ["Hanken Grotesk"],
+                            "headline-lg": ["\"Source Serif 4\""],
+                            "body-md": ["Hanken Grotesk"],
+                            "display-lg": ["\"Source Serif 4\""],
+                            "headline-md": ["\"Source Serif 4\""],
+                            "headline-lg-mobile": ["\"Source Serif 4\""],
+                            "label-md": ["Hanken Grotesk"],
+                            "label-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                            "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                            "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                            "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f4f4fb; } /* Override background as per prompt */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-on-background font-body-md py-12 px-4 md:px-8">
+<!-- TopAppBar -->
+<header class="bg-surface w-full top-0 sticky border-b border-outline-variant flex justify-between items-center h-16 px-margin-desktop max-w-container-max mx-auto mb-12 z-50 bg-white/80 backdrop-blur-sm shadow-sm border-surface-dim">
+<div class="font-headline-md text-headline-md font-semibold text-primary" style="color: #002627;">Social Generator</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-primary border-b-2 border-primary pb-1 font-label-md text-label-md hover:text-primary transition-colors duration-200 cursor-pointer transition-all active:opacity-70" href="#">Generator</a>
+<a class="text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors duration-200 cursor-pointer transition-all active:opacity-70" href="#">History</a>
+<a class="text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors duration-200 cursor-pointer transition-all active:opacity-70" href="#">Library</a>
+</nav>
+<div class="flex gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-70"><span class="material-symbols-outlined">settings</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-70"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</header>
+<main class="max-w-[900px] mx-auto flex flex-col gap-8 mt-8">
+<!-- SECTION 1: Generator Card -->
+<section class="bg-surface border border-outline-variant rounded p-8 flex flex-col gap-8">
+<!-- Header -->
+<div class="flex flex-col gap-2">
+<h1 class="font-headline-lg text-headline-lg text-primary">Social Generator</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Paste or write source content, then generate a platform-ready post.</p>
+</div>
+<!-- Source Input -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-primary">Source Content</label>
+<textarea class="w-full bg-surface border border-outline-variant rounded p-4 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-0 transition-colors resize-none" placeholder="Paste your text or notes here..." rows="4"></textarea>
+</div>
+<hr class="border-t border-outline-variant w-full opacity-50">
+<!-- Platform Tabs -->
+<div class="flex gap-2 p-1 bg-surface-container-low rounded inline-flex w-fit">
+<button class="px-6 py-2 rounded bg-surface border border-outline-variant shadow-sm font-label-md text-label-md text-primary">Instagram</button>
+<button class="px-6 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">LinkedIn</button>
+<button class="px-6 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">X</button>
+<button class="px-6 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">Facebook</button>
+</div>
+<!-- Two-Column Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- LEFT COLUMN (Image) -->
+<div class="md:col-span-5 flex flex-col gap-4">
+<!-- Image Actions -->
+<div class="flex justify-end items-center gap-2">
+<button class="flex items-center gap-2 px-4 py-2 border border-primary rounded-full font-label-sm text-label-sm text-primary hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[16px]">check</span> Approve
+                        </button>
+<button class="p-2 border border-outline-variant rounded-full text-on-surface-variant hover:text-primary hover:border-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+</button>
+</div>
+<!-- Image Preview -->
+<div class="w-full aspect-[4/3] rounded border border-outline-variant overflow-hidden relative">
+<img alt="Editorial Workspace" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1XmVnFdWmhISBD4E2MOs_U85RwsVTSyi8_dbxqp5FdQmO_Fy-TWSHd2UWpDX_3xAOWBfQaHD2CGMMCIDsTJ5KB5Cf0mmMiUKCkdtZKgdOVFYm_RYnON7m6C2jbXOL7hhyw5p57DqKfzJUdJVoRiBW4VCmBVE3PZo4vBE9mKtNOz9FV1PB41d5vU3BmjrC65ojMLxSTtPLdztTJiubWztCQz-xfgH85ea2hnCn-UdCyqUDvUj_SLavJq">
+</div>
+</div>
+<!-- RIGHT COLUMN (Caption & Hashtags) -->
+<div class="md:col-span-7 flex flex-col gap-6">
+<!-- Caption Header & Actions -->
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-4">
+<label class="font-label-md text-label-md text-primary">Caption</label>
+<button class="font-label-sm text-label-sm text-primary underline hover:opacity-70 transition-opacity">✨ Regenerate</button>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 border border-primary rounded-full font-label-sm text-label-sm text-primary hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[16px]">check</span> Approve
+                            </button>
+<button class="p-1.5 border border-outline-variant rounded-full text-on-surface-variant hover:text-primary hover:border-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+</button>
+</div>
+</div>
+<!-- Caption Textarea -->
+<textarea class="w-full bg-surface border border-outline-variant rounded p-4 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-0 transition-colors resize-y" rows="6">Embracing the quiet moments of focused work. There's something inherently powerful about clearing the digital noise, sitting down with physical tools, and letting deep thoughts surface.
+
+How are you making time for deep work today?
+
+#DeepWork #Focus #EditorialMindset #Productivity</textarea>
+<!-- Character Count -->
+<div class="text-right font-label-sm text-label-sm text-on-surface-variant">242 / 2200</div>
+<!-- Hashtags Section -->
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-primary uppercase text-[12px] tracking-wider">HASHTAGS</label>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface-variant hover:text-primary hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">check</span> Approve
+                                </button>
+<button class="p-1.5 border border-outline-variant rounded-full text-on-surface-variant hover:text-primary hover:border-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+</button>
+</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full font-label-sm text-label-sm">#DeepWork</span>
+<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full font-label-sm text-label-sm">#Focus</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface rounded-full font-label-sm text-label-sm border border-outline-variant border-opacity-50">#EditorialMindset</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface rounded-full font-label-sm text-label-sm border border-outline-variant border-opacity-50">#Productivity</span>
+</div>
+</div>
+<!-- Primary Actions -->
+<div class="flex flex-col gap-4 mt-2">
+<button class="w-full bg-primary-container text-on-primary font-label-md text-label-md py-3 rounded-full hover:opacity-90 transition-opacity">Copy Caption</button>
+<div class="grid grid-cols-2 gap-4">
+<button class="w-full border border-primary text-primary font-label-md text-label-md py-3 rounded-full hover:bg-surface-container-low transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">download</span> Image
+                             </button>
+<button class="w-full border border-primary text-primary font-label-md text-label-md py-3 rounded-full hover:bg-surface-container-low transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">bookmark</span> Save
+                             </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: Past Generations Card -->
+
+</main>
+<!-- Footer -->
+<footer class="bg-surface w-full py-8 mt-16 border-t border-outline-variant hidden">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop max-w-container-max mx-auto gap-4">
+<div class="font-label-md text-label-md font-bold text-primary">Social Generator</div>
+<div class="text-secondary font-label-sm text-label-sm">© 2024 Social Generator. Editorial Precision by Design.</div>
+<div class="flex gap-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-sm text-label-sm" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-sm text-label-sm" href="#">Terms</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-sm text-label-sm" href="#">Support</a>
+</div>
+</div>
+</footer>
+
+
+</body></html>

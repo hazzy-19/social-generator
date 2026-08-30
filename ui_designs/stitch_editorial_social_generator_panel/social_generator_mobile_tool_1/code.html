@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Social Post Generator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#191c20",
+                      "on-tertiary-fixed-variant": "#3e494a",
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed-dim": "#bdc9ca",
+                      "outline-variant": "#c1c8c8",
+                      "on-tertiary-fixed": "#131d1e",
+                      "secondary": "#4b6264",
+                      "inverse-surface": "#2e3035",
+                      "outline": "#717878",
+                      "on-secondary-fixed-variant": "#344b4d",
+                      "on-primary-fixed-variant": "#2b4c4d",
+                      "on-tertiary-container": "#7f8b8c",
+                      "surface-container": "#ededf3",
+                      "secondary-fixed": "#cee7e9",
+                      "primary": "#000d0d",
+                      "error": "#ba1a1a",
+                      "surface-container-lowest": "#ffffff",
+                      "surface": "#f9f9ff",
+                      "surface-container-highest": "#e2e2e8",
+                      "on-surface-variant": "#414848",
+                      "surface-variant": "#e2e2e8",
+                      "primary-fixed-dim": "#aacdce",
+                      "surface-container-high": "#e7e8ee",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed-dim": "#b2cbcd",
+                      "on-primary-container": "#6d8f90",
+                      "background": "#f9f9ff",
+                      "inverse-on-surface": "#f0f0f6",
+                      "on-secondary-fixed": "#071f21",
+                      "surface-dim": "#d9dadf",
+                      "on-secondary-container": "#506769",
+                      "surface-tint": "#436465",
+                      "primary-fixed": "#c5e9ea",
+                      "on-background": "#191c20",
+                      "inverse-primary": "#aacdce",
+                      "surface-container-low": "#f3f3f9",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#182324",
+                      "on-primary-fixed": "#002021",
+                      "primary-container": "#002627",
+                      "error-container": "#ffdad6",
+                      "on-tertiary": "#ffffff",
+                      "secondary-container": "#cbe4e6",
+                      "tertiary": "#030c0d",
+                      "surface-bright": "#f9f9ff",
+                      "tertiary-fixed": "#d9e5e6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin-mobile": "20px",
+                      "margin-desktop": "64px",
+                      "unit": "4px",
+                      "container-max": "1120px"
+              },
+              "fontFamily": {
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg": [
+                              "\"Source Serif 4\""
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "\"Source Serif 4\""
+                      ],
+                      "label-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "\"Source Serif 4\""
+                      ],
+                      "headline-md": [
+                              "\"Source Serif 4\""
+                      ]
+              },
+              "fontSize": {
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Auto-growing textarea trick */
+        .grow-wrap {
+            display: grid;
+        }
+        .grow-wrap::after {
+            content: attr(data-replicated-value) " ";
+            white-space: pre-wrap;
+            visibility: hidden;
+        }
+        .grow-wrap > textarea {
+            resize: none;
+            overflow: hidden;
+        }
+        .grow-wrap > textarea,
+        .grow-wrap::after {
+            grid-area: 1 / 1 / 2 / 2;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-low text-on-surface antialiased min-h-screen">
+<main class="w-full max-w-container-max mx-auto px-margin-mobile py-8">
+<!-- Header -->
+<header class="mb-8">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-2">Social Generator</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Transform your ideas into engaging posts for multiple platforms with a single click.</p>
+</header>
+<!-- Form Canvas -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 mb-8 flex flex-col gap-6">
+<!-- Source Content -->
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface" for="sourceContent">Source Content</label>
+<textarea class="w-full bg-surface border border-outline-variant rounded p-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-0 transition-colors" id="sourceContent" placeholder="Paste your article snippet, thought, or link here..." rows="4"></textarea>
+</div>
+<hr class="border-t border-outline-variant opacity-50"/>
+<!-- Platform Tabs -->
+<div class="flex flex-col gap-3">
+<span class="font-label-md text-label-md text-on-surface">Platform</span>
+<div class="bg-surface-container-low p-1 rounded-lg flex overflow-hidden">
+<button aria-current="page" class="flex-1 py-2 px-3 bg-surface-container-lowest shadow-sm rounded border border-outline-variant font-label-sm text-label-sm text-primary flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                        Instagram
+                    </button>
+<button class="flex-1 py-2 px-3 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+                        Twitter
+                    </button>
+<button class="flex-1 py-2 px-3 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">work</span>
+                        LinkedIn
+                    </button>
+</div>
+</div>
+<!-- Image Generation Toggle -->
+<div class="flex items-center justify-between mt-2">
+<span class="font-label-md text-label-md text-on-surface">Visual Asset</span>
+<div class="flex items-center gap-2 bg-surface-container-low rounded-full p-1 border border-outline-variant">
+<button class="px-3 py-1 bg-surface-container-lowest rounded-full font-label-sm text-label-sm text-primary shadow-sm border border-outline-variant">AI Gen</button>
+<button class="px-3 py-1 rounded-full font-label-sm text-label-sm text-on-surface-variant hover:text-primary">Upload</button>
+</div>
+</div>
+<!-- Image Preview -->
+<div class="w-full aspect-[4/3] bg-surface-container-highest rounded border border-outline-variant flex flex-col items-center justify-center overflow-hidden relative">
+<img class="object-cover w-full h-full opacity-80 mix-blend-multiply absolute inset-0" data-alt="A minimalist, high-end editorial photo featuring a meticulously arranged flat lay of a sleek modern journal, a matte black fountain pen, and a single monstera leaf on a pristine white marble surface. The lighting is bright and diffuse, casting very soft shadows, creating a calm, focused, and professional atmosphere. The composition emphasizes clean geometry and breathing space, typical of premium design mockups." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgKmB4WPcLjfDKXAR1_9gvDpE8e3R87GACDij3WkW_6EJdRmQf3R5O-a7sjnU43U5znf-g7BMJ5--fyZ3Kpa5uEgXB93L9MJPAfxgFYR9pPnRRFZ5SpaS_LNRvrfifAci9r6yKjjVIYMpkRP4cmi635zbFEqBUP0NvWelaS-dhVi5_31OvKGyXbwgOB_ZnbcqlTMlukWfJUNLn4_PzRmPz3XgaQB627L3ry5l4cjwRtoMmwNlhuo8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/20 to-transparent"></div>
+<div class="relative z-10 flex flex-col items-center justify-center gap-2">
+<span class="material-symbols-outlined text-outline text-[32px]">image</span>
+<span class="font-label-sm text-label-sm text-outline">Generated Visual Preview</span>
+</div>
+</div>
+<hr class="border-t border-outline-variant opacity-50"/>
+<!-- Caption Area -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<label class="font-label-md text-label-md text-on-surface" for="generatedCaption">Caption</label>
+<button class="font-label-sm text-label-sm text-on-primary-container hover:text-primary flex items-center gap-1 transition-colors group">
+<span class="material-symbols-outlined text-[16px] group-hover:rotate-180 transition-transform duration-300">magic_button</span>
+                        Regenerate
+                    </button>
+</div>
+<div class="grow-wrap border border-outline-variant rounded bg-surface focus-within:border-primary transition-colors relative" data-replicated-value="Finding clarity in the noise. Today's deep dive into minimalist design principles reveals that what you leave out is just as important as what you put in. Emulate the editorial approach: structured grids, generous whitespace, and typography that breathes. 🖋️✨">
+<textarea class="w-full p-3 font-body-md text-body-md text-on-surface bg-transparent border-none focus:ring-0" id="generatedCaption" oninput="this.parentNode.dataset.replicatedValue = this.value" rows="3">Finding clarity in the noise. Today's deep dive into minimalist design principles reveals that what you leave out is just as important as what you put in. Emulate the editorial approach: structured grids, generous whitespace, and typography that breathes. 🖋️✨</textarea>
+</div>
+<!-- Character Count -->
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant">254 / 2200</span>
+</div>
+</div>
+<!-- Hashtags -->
+<div class="flex flex-wrap gap-2 mt-[-8px]">
+<span class="inline-flex items-center px-3 py-1 bg-surface-container-low text-on-surface rounded-full font-label-sm text-label-sm">#MinimalistDesign</span>
+<span class="inline-flex items-center px-3 py-1 bg-surface-container-low text-on-surface rounded-full font-label-sm text-label-sm">#EditorialPrecision</span>
+<span class="inline-flex items-center px-3 py-1 bg-surface-container-low text-on-surface rounded-full font-label-sm text-label-sm">#UIUX</span>
+<button class="inline-flex items-center justify-center w-7 h-7 bg-surface-container border border-outline-variant text-on-surface-variant rounded-full hover:text-primary hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-3">
+<button class="w-full py-4 bg-primary-container text-on-primary rounded-full font-label-md text-label-md hover:bg-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+                Copy Caption
+            </button>
+<div class="flex gap-3">
+<button class="flex-1 py-3 bg-transparent border border-primary-container text-primary-container rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                    Image
+                </button>
+<button class="flex-1 py-3 bg-transparent border border-primary-container text-primary-container rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">bookmark</span>
+                    Save
+                </button>
+</div>
+</div>
+</main>
+<script>
+        // Simple auto-grow script initialization for fallback if CSS isn't fully supported
+        document.querySelectorAll('textarea').forEach(el => {
+            el.style.height = el.setAttribute('style', 'height: ' + el.scrollHeight + 'px');
+            el.classList.add('auto');
+            el.addEventListener('input', e => {
+                el.style.height = 'auto';
+                el.style.height = (el.scrollHeight) + 'px';
+            });
+        });
+    </script>
+</body></html>

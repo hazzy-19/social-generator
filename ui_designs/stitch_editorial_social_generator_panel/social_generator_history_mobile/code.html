@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Social Generator - History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Source+Serif+4:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-container": "#cbe4e6",
+                      "surface": "#f9f9ff",
+                      "on-tertiary-fixed-variant": "#3e494a",
+                      "surface-container-low": "#f3f3f9",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#d9dadf",
+                      "primary-container": "#002627",
+                      "secondary-fixed": "#cee7e9",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#506769",
+                      "tertiary-container": "#182324",
+                      "tertiary": "#030c0d",
+                      "background": "#f9f9ff",
+                      "surface-container-high": "#e7e8ee",
+                      "on-primary-container": "#6d8f90",
+                      "surface-container": "#ededf3",
+                      "primary": "#000d0d",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#7f8b8c",
+                      "on-tertiary": "#ffffff",
+                      "secondary-fixed-dim": "#b2cbcd",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed": "#131d1e",
+                      "outline": "#717878",
+                      "on-primary-fixed-variant": "#2b4c4d",
+                      "inverse-primary": "#aacdce",
+                      "inverse-surface": "#2e3035",
+                      "on-secondary-fixed": "#071f21",
+                      "error": "#ba1a1a",
+                      "surface-container-highest": "#e2e2e8",
+                      "surface-container-lowest": "#ffffff",
+                      "outline-variant": "#c1c8c8",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed-dim": "#bdc9ca",
+                      "on-surface-variant": "#414848",
+                      "primary-fixed": "#c5e9ea",
+                      "tertiary-fixed": "#d9e5e6",
+                      "inverse-on-surface": "#f0f0f6",
+                      "surface-variant": "#e2e2e8",
+                      "secondary": "#4b6264",
+                      "on-background": "#191c20",
+                      "surface-bright": "#f9f9ff",
+                      "on-surface": "#191c20",
+                      "primary-fixed-dim": "#aacdce",
+                      "on-secondary-fixed-variant": "#344b4d",
+                      "surface-tint": "#436465",
+                      "on-primary-fixed": "#002021"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "unit": "4px",
+                      "margin-mobile": "20px",
+                      "container-max": "1120px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "\"Source Serif 4\""
+                      ],
+                      "display-lg": [
+                              "\"Source Serif 4\""
+                      ],
+                      "label-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-md": [
+                              "\"Source Serif 4\""
+                      ],
+                      "headline-lg-mobile": [
+                              "\"Source Serif 4\""
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Hide scrollbar for horizontal scroll areas */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md antialiased md:hidden">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-container-lowest w-full top-0 sticky border-b border-outline-variant dark:border-outline z-50">
+<div class="flex justify-between items-center h-16 px-margin-mobile mx-auto">
+<h1 class="font-headline-md text-headline-md font-semibold text-primary dark:text-primary-fixed">
+                Social Generator
+            </h1>
+<div class="flex items-center gap-4 text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined cursor-pointer transition-all active:opacity-70 hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" data-icon="settings">settings</span>
+<span class="material-symbols-outlined cursor-pointer transition-all active:opacity-70 hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+<!-- Mobile Navigation Row -->
+<nav class="flex px-margin-mobile gap-6 overflow-x-auto no-scrollbar">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-tertiary-fixed-variant hover:text-primary dark:hover:text-primary-fixed cursor-pointer transition-all active:opacity-70 whitespace-nowrap py-3" href="#">
+                Generator
+            </a>
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 cursor-pointer transition-all active:opacity-70 whitespace-nowrap py-3" href="#">
+                History
+            </a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-tertiary-fixed-variant hover:text-primary dark:hover:text-primary-fixed cursor-pointer transition-all active:opacity-70 whitespace-nowrap py-3" href="#">
+                Library
+            </a>
+</nav>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex flex-col w-full">
+<!-- Search and Filters Section -->
+<div class="px-margin-mobile py-6 bg-surface-container-low border-b border-outline-variant/30">
+<!-- Search Bar -->
+<div class="relative w-full mb-6">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface border border-outline-variant rounded-full font-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary transition-colors" placeholder="Search past generations..." type="text"/>
+</div>
+<!-- Platform Filters (Segmented Control Style) -->
+<div class="flex overflow-x-auto no-scrollbar gap-2 pb-2">
+<button class="px-4 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md whitespace-nowrap flex-shrink-0 transition-colors">
+                    All Platforms
+                </button>
+<button class="px-4 py-2 bg-surface border border-outline-variant text-on-surface rounded-full font-label-md text-label-md whitespace-nowrap flex-shrink-0 active:bg-surface-variant transition-colors">
+                    Twitter / X
+                </button>
+<button class="px-4 py-2 bg-surface border border-outline-variant text-on-surface rounded-full font-label-md text-label-md whitespace-nowrap flex-shrink-0 active:bg-surface-variant transition-colors">
+                    LinkedIn
+                </button>
+<button class="px-4 py-2 bg-surface border border-outline-variant text-on-surface rounded-full font-label-md text-label-md whitespace-nowrap flex-shrink-0 active:bg-surface-variant transition-colors">
+                    Instagram
+                </button>
+</div>
+</div>
+<!-- History List -->
+<div class="flex-grow flex flex-col px-margin-mobile py-4 gap-4">
+<!-- History Item 1 -->
+<article class="flex flex-col bg-surface border border-outline-variant p-4 rounded-lg gap-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Twitter Thread</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 hours ago</span>
+</div>
+<h3 class="font-body-md text-on-surface line-clamp-2">The future of UI design isn't just about rounded corners. It's about editorial precision and removing friction...</h3>
+<div class="flex justify-between items-center mt-2 border-t border-outline-variant/30 pt-3">
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-secondary-container/30 text-on-secondary-container rounded-full font-label-sm text-label-sm">Design</span>
+<span class="px-2 py-1 bg-secondary-container/30 text-on-secondary-container rounded-full font-label-sm text-label-sm">Tech</span>
+</div>
+<button class="flex items-center gap-1 text-primary font-label-md text-label-md hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-[20px]" data-icon="restore">restore</span>
+                        Restore
+                    </button>
+</div>
+</article>
+<!-- History Item 2 -->
+<article class="flex flex-col bg-surface border border-outline-variant p-4 rounded-lg gap-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="work">work</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">LinkedIn Post</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Yesterday</span>
+</div>
+<h3 class="font-body-md text-on-surface line-clamp-2">I'm thrilled to announce my new role as Lead Product Designer. A huge thank you to everyone who supported me...</h3>
+<div class="flex justify-between items-center mt-2 border-t border-outline-variant/30 pt-3">
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-secondary-container/30 text-on-secondary-container rounded-full font-label-sm text-label-sm">Career</span>
+</div>
+<button class="flex items-center gap-1 text-primary font-label-md text-label-md hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-[20px]" data-icon="restore">restore</span>
+                        Restore
+                    </button>
+</div>
+</article>
+<!-- History Item 3 -->
+<article class="flex flex-col bg-surface border border-outline-variant p-4 rounded-lg gap-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="photo_camera">photo_camera</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Insta Caption</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Oct 12, 2024</span>
+</div>
+<h3 class="font-body-md text-on-surface line-clamp-2">Morning light hitting the studio just right. ☕️ Working on something special for the winter collection. Stay tuned. ✨</h3>
+<div class="flex justify-between items-center mt-2 border-t border-outline-variant/30 pt-3">
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-secondary-container/30 text-on-secondary-container rounded-full font-label-sm text-label-sm">Lifestyle</span>
+<span class="px-2 py-1 bg-secondary-container/30 text-on-secondary-container rounded-full font-label-sm text-label-sm">Art</span>
+</div>
+<button class="flex items-center gap-1 text-primary font-label-md text-label-md hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-[20px]" data-icon="restore">restore</span>
+                        Restore
+                    </button>
+</div>
+</article>
+<!-- History Item 4 -->
+<article class="flex flex-col bg-surface border border-outline-variant p-4 rounded-lg gap-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Twitter Thread</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Oct 10, 2024</span>
+</div>
+<h3 class="font-body-md text-on-surface line-clamp-2">5 lessons learned from failing my first startup. A thread 🧵👇 (Number 3 is where it really went wrong...)</h3>
+<div class="flex justify-between items-center mt-2 border-t border-outline-variant/30 pt-3">
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-secondary-container/30 text-on-secondary-container rounded-full font-label-sm text-label-sm">Startup</span>
+<span class="px-2 py-1 bg-secondary-container/30 text-on-secondary-container rounded-full font-label-sm text-label-sm">Advice</span>
+</div>
+<button class="flex items-center gap-1 text-primary font-label-md text-label-md hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-[20px]" data-icon="restore">restore</span>
+                        Restore
+                    </button>
+</div>
+</article>
+<div class="py-8 flex justify-center">
+<button class="px-6 py-3 border border-primary text-primary rounded-full font-label-md text-label-md hover:bg-surface-variant transition-colors">
+                    Load More History
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) - Using structure from JSON but adapted for Bottom Nav -->
+<nav class="bg-surface border-t border-outline-variant/30 fixed bottom-0 w-full pb-safe z-50 md:hidden">
+<div class="flex justify-around items-center h-16">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors py-2 px-4" href="#">
+<span class="material-symbols-outlined" data-icon="edit_square">edit_square</span>
+<span class="font-label-sm text-[10px]">Generator</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary border-t-2 border-primary pt-[6px] px-4" href="#">
+<span class="material-symbols-outlined" data-icon="history" data-weight="fill">history</span>
+<span class="font-label-sm text-[10px] font-bold">History</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors py-2 px-4" href="#">
+<span class="material-symbols-outlined" data-icon="bookmarks">bookmarks</span>
+<span class="font-label-sm text-[10px]">Library</span>
+</a>
+</div>
+</nav>
+<!-- Add padding to body to account for fixed bottom nav -->
+<style>
+        body { padding-bottom: calc(4rem + env(safe-area-inset-bottom)); }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+</body></html>

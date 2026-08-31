@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' }); // Read from backend .env
+require('dotenv').config({ path: '../../backend/.env' }); // Read from backend .env
 const express = require('express');
 const cors = require('cors');
 const { searchPhotos } = require('pexelkit');

@@ -8,3 +8,4 @@ node_modules/
 .refact/
 *.egg-info/
 uv.lock
+/image-service/

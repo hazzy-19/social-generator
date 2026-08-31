@@ -24,6 +24,7 @@ class SocialGeneration(Base):
     __tablename__ = "social_generations"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), index=True, nullable=False)
     source_content: Mapped[str] = mapped_column(Text, nullable=False)
     platform: Mapped[PlatformType] = mapped_column(Enum(PlatformType, name="platform_type"), nullable=False)
 

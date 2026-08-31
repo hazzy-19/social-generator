@@ -17,19 +17,25 @@ async def create(db: AsyncSession, generation: SocialGeneration) -> SocialGenera
     return generation
 
 
-async def get_by_id(db: AsyncSession, generation_id: uuid.UUID) -> SocialGeneration | None:
-    result = await db.execute(select(SocialGeneration).where(SocialGeneration.id == generation_id))
+async def get_by_id(db: AsyncSession, generation_id: uuid.UUID, user_id: uuid.UUID) -> SocialGeneration | None:
+    result = await db.execute(
+        select(SocialGeneration).where(
+            SocialGeneration.id == generation_id,
+            SocialGeneration.user_id == user_id
+        )
+    )
     return result.scalar_one_or_none()
 
 
 async def list_recent(
     db: AsyncSession,
+    user_id: uuid.UUID,
     platform: str | None = None,
     search: str | None = None,
     limit: int = 20,
     offset: int = 0,
 ) -> list[SocialGeneration]:
-    query = select(SocialGeneration).order_by(SocialGeneration.created_at.desc()).limit(limit).offset(offset)
+    query = select(SocialGeneration).where(SocialGeneration.user_id == user_id).order_by(SocialGeneration.created_at.desc()).limit(limit).offset(offset)
     if platform:
         query = query.where(SocialGeneration.platform == platform)
     if search:

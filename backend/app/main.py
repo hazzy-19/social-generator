@@ -34,7 +34,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+import os
+from fastapi.staticfiles import StaticFiles
+
 app.include_router(generations_router)
+
+# Mount the static files for uploads
+os.makedirs("uploads/images", exist_ok=True)
+app.mount("/static", StaticFiles(directory="uploads"), name="static")
 
 
 @app.get("/health")

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Dashboard() {
+  const { currentUser } = useAuth();
   const [topic, setTopic] = useState('');
   const [platform, setPlatform] = useState('linkedin');
   const [loading, setLoading] = useState(false);
@@ -24,6 +26,15 @@ export default function Dashboard() {
 
   const [error, setError] = useState('');
 
+  const getAuthHeaders = async () => {
+    if (!currentUser) return { 'Content-Type': 'application/json' };
+    const token = await currentUser.getIdToken();
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  };
+
   const handleGenerate = async () => {
     if (!topic) return;
     setLoading(true);
@@ -33,9 +44,10 @@ export default function Dashboard() {
     const timeoutId = setTimeout(() => controller.abort(), 120000); // 120s timeout
 
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch('http://127.0.0.1:8000/generations', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           source_content: topic,
           platform: platform
@@ -51,91 +63,97 @@ export default function Dashboard() {
         setCaption(data.caption);
         setHashtags(data.hashtags);
         setImageUrl(data.image_url);
+        
         setImageApproved(data.image_approved);
         setCaptionApproved(data.caption_approved);
         setHashtagsApproved(data.hashtags_approved);
       } else {
-        const errorMsg = Array.isArray(data.detail) ? data.detail[0].msg : data.detail;
-        setError(errorMsg || 'Error generating content');
+        console.error("Failed to generate:", data);
+        setError(data.detail || "We are currently experiencing issues reaching the AI model.");
       }
-    } catch (err) {
-      clearTimeout(timeoutId);
-      console.error(err);
-      if (err.name === 'AbortError') {
-        setError('Request timed out. Please try again.');
-      } else {
-        setError('Failed to connect to backend.');
-      }
+    } catch (error) {
+      console.error("Error during generation:", error);
+      setError("We are currently experiencing issues reaching the AI model.");
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const handleReload = async (section) => {
     if (!generationId) return;
-    setLoading(true);
-    setError('');
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(`http://127.0.0.1:8000/generations/${generationId}/reload/${section}`, {
-        method: 'POST'
+        method: 'POST',
+        headers
       });
       const data = await response.json();
       if (response.ok) {
-        setCaption(data.caption);
-        setHashtags(data.hashtags);
-        setImageUrl(data.image_url);
-        setImageApproved(data.image_approved);
-        setCaptionApproved(data.caption_approved);
-        setHashtagsApproved(data.hashtags_approved);
+        if (section === 'image') {
+          setImageUrl(data.image_url);
+          setImageApproved(data.image_approved);
+        } else if (section === 'caption') {
+          setCaption(data.caption);
+          setCaptionApproved(data.caption_approved);
+        } else if (section === 'hashtags') {
+          setHashtags(data.hashtags);
+          setHashtagsApproved(data.hashtags_approved);
+        }
       } else {
-        setError(data.detail || `Error reloading ${section}`);
+        console.error(`Failed to reload ${section}:`, data);
       }
-    } catch (err) {
-      setError('Failed to connect to backend.');
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error(`Error reloading ${section}:`, error);
     }
   };
 
   const handleApprove = async (section) => {
     if (!generationId) return;
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(`http://127.0.0.1:8000/generations/${generationId}/approve/${section}`, {
-        method: 'POST'
+        method: 'POST',
+        headers
       });
       const data = await response.json();
       if (response.ok) {
-        setImageApproved(data.image_approved);
-        setCaptionApproved(data.caption_approved);
-        setHashtagsApproved(data.hashtags_approved);
+        if (section === 'image') setImageApproved(true);
+        if (section === 'caption') setCaptionApproved(true);
+        if (section === 'hashtags') setHashtagsApproved(true);
       } else {
-        setError(data.detail || `Error approving ${section}`);
+        console.error(`Failed to approve ${section}:`, data);
       }
-    } catch (err) {
-      setError('Failed to connect to backend.');
+    } catch (error) {
+      console.error(`Error approving ${section}:`, error);
     }
   };
 
   const handleSave = async () => {
     if (!generationId) return;
-    setLoading(true);
     try {
+      const headers = await getAuthHeaders();
       const response = await fetch(`http://127.0.0.1:8000/generations/${generationId}/save`, {
-        method: 'POST'
+        method: 'POST',
+        headers
       });
+      const data = await response.json();
       if (response.ok) {
-        alert('Post saved successfully!');
+        alert("Post saved successfully!");
       } else {
-        const data = await response.json();
-        setError(data.detail || 'Error saving post');
+        console.error("Failed to save post:", data);
+        alert("Failed to save post: " + (data.detail || "Unknown error"));
       }
-    } catch (err) {
-      setError('Failed to connect to backend.');
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error("Error saving post:", error);
+      alert("Error saving post.");
     }
   };
 
+  const getFullImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    return `http://127.0.0.1:8000${url}`;
+  };
 
   return (
     <div className="min-h-screen text-on-background font-body-md py-12 px-4 md:px-8">
@@ -210,7 +228,7 @@ export default function Dashboard() {
                 {/* Image Preview */}
                 <div className="w-full aspect-[4/3] rounded border border-outline-variant overflow-hidden relative">
                   {imageUrl ? (
-                    <img alt="Generated" className="w-full h-full object-cover" src={imageUrl} />
+                    <img alt="Generated post graphic" className="w-full h-full object-cover transition-opacity duration-300" src={getFullImageUrl(imageUrl)} />
                   ) : (
                     <div className="w-full h-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant">No Image</div>
                   )}

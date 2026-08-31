@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     # App
     environment: str = "development"
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:5174"]
+    firebase_credentials_path: str | None = None
 
 
 settings = Settings()

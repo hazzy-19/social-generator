@@ -9,3 +9,5 @@ node_modules/
 *.egg-info/
 uv.lock
 /image-service/
+
+firebase-adminsdk.json

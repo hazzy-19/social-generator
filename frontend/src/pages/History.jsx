@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../contexts/AuthContext';
 
 const API = 'http://127.0.0.1:8000';
 
 export default function History() {
+  const { currentUser } = useAuth();
   const [generations, setGenerations] = useState([]);
   const [search, setSearch] = useState('');
   const [platformFilter, setPlatformFilter] = useState('');
@@ -17,7 +19,14 @@ export default function History() {
       const params = new URLSearchParams();
       if (platformFilter) params.set('platform', platformFilter);
       if (search) params.set('search', search);
-      const res = await fetch(`${API}/generations?${params}`);
+      
+      const headers = {};
+      if (currentUser) {
+        const token = await currentUser.getIdToken();
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const res = await fetch(`${API}/generations?${params}`, { headers });
       if (res.ok) {
         setGenerations(await res.json());
       }
@@ -29,11 +38,16 @@ export default function History() {
   };
 
   useEffect(() => {
-    fetchGenerations();
-  }, [platformFilter]);
+    if (currentUser) {
+      fetchGenerations();
+    } else {
+      setLoading(false);
+    }
+  }, [platformFilter, currentUser]);
 
   // Debounced search
   useEffect(() => {
+    if (!currentUser) return;
     const timer = setTimeout(() => fetchGenerations(), 400);
     return () => clearTimeout(timer);
   }, [search]);
@@ -76,6 +90,12 @@ export default function History() {
     a.click();
     URL.revokeObjectURL(url);
   };
+  
+  const getFullImageUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url;
+    return `http://127.0.0.1:8000${url}`;
+  };
 
   return (
     <div className="bg-surface-container-low min-h-screen flex flex-col font-body-md text-on-surface">
@@ -115,6 +135,10 @@ export default function History() {
           <div className="flex flex-col">
             {loading ? (
               <div className="p-12 text-center text-on-surface-variant font-body-md">Loading...</div>
+            ) : !currentUser ? (
+              <div className="p-12 text-center flex flex-col items-center gap-3">
+                <p className="font-body-md text-on-surface-variant">Please log in to view your generations.</p>
+              </div>
             ) : generations.length === 0 ? (
               <div className="p-12 text-center flex flex-col items-center gap-3">
                 <span className="material-symbols-outlined text-[48px] text-outline-variant">history</span>
@@ -128,7 +152,7 @@ export default function History() {
                     <img
                       alt="Thumbnail"
                       className="w-20 h-20 object-cover rounded border border-outline-variant shrink-0"
-                      src={gen.image_url}
+                      src={getFullImageUrl(gen.image_url)}
                     />
                   ) : (
                     <div className="w-20 h-20 rounded border border-outline-variant bg-surface-container-high flex items-center justify-center text-on-surface-variant shrink-0">

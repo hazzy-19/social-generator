@@ -1,145 +1,111 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Profile() {
+  const { currentUser } = useAuth();
+  const [displayName, setDisplayName] = useState('');
+  const [bio, setBio] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    // TODO: persist profile to backend
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
   return (
     <div className="bg-background text-on-background min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Main Content */}
-      <main className="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
+      <main className="flex-grow w-full max-w-[900px] mx-auto px-4 md:px-8 py-12">
         {/* Profile Header */}
-        <section className="mb-16 flex flex-col md:flex-row items-start md:items-center gap-8">
-          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shrink-0 border border-outline-variant">
-            <img className="w-full h-full object-cover" alt="Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP4yKyF0jU-VHjFzlpWSTiqnzwgfMOaFnINQuUc5JpQXIUaH3kjkcA2mFMMwL75rMpVjkA4IrOuE3FyjxhWVm5uPjNSQNPX0Mrf7MxeWjAOtuSGKkEJp3FGy8QgBk5QQiwzZYsoJ0d5sIobBFmvtjZ4hHUhQjng9y4ZLVrZCJlc3SI3dUhwmKCqUdY9laMJFax2Elfac95AMkLHqtqmjOh4H9IbNVPmC2-5jU-SxJ5ftpm_2mCaVU"/>
+        <section className="mb-12 flex flex-col md:flex-row items-start md:items-center gap-8">
+          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shrink-0 border border-outline-variant bg-surface-container-high flex items-center justify-center">
+            {currentUser?.photoURL ? (
+              <img className="w-full h-full object-cover" alt="Profile" src={currentUser.photoURL} />
+            ) : (
+              <span className="material-symbols-outlined text-[48px] text-on-surface-variant">person</span>
+            )}
           </div>
           <div className="flex-grow">
-            <h1 className="font-display-lg text-display-lg text-primary mb-2">Eleanor Vance</h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant mb-4">eleanor.vance@example.com</p>
-            <button className="bg-primary text-on-primary font-label-md text-label-md px-6 py-2 rounded-full hover:bg-on-surface-variant transition-colors">Edit Profile</button>
+            <h1 className="font-display-lg text-display-lg text-primary mb-2">
+              {currentUser?.displayName || 'Your Name'}
+            </h1>
+            <p className="font-body-lg text-body-lg text-on-surface-variant">
+              {currentUser?.email || 'your@email.com'}
+            </p>
           </div>
         </section>
 
-        {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {/* Left Column: Settings & Preferences */}
-          <div className="col-span-1 md:col-span-4 space-y-8">
-            {/* Account Settings */}
-            <section>
-              <h2 className="font-headline-md text-headline-md text-primary mb-6 border-b border-outline-variant pb-2">Account Settings</h2>
-              <ul className="space-y-4 font-body-md text-body-md text-on-surface">
-                <li className="flex justify-between items-center py-2 border-b border-surface-container-highest cursor-pointer hover:text-primary transition-colors">
-                  <span>Password & Security</span>
-                  <span className="material-symbols-outlined text-outline">chevron_right</span>
-                </li>
-                <li className="flex justify-between items-center py-2 border-b border-surface-container-highest cursor-pointer hover:text-primary transition-colors">
-                  <span>Notifications</span>
-                  <span className="material-symbols-outlined text-outline">chevron_right</span>
-                </li>
-                <li className="flex justify-between items-center py-2 border-b border-surface-container-highest cursor-pointer hover:text-primary transition-colors">
-                  <span>Billing & Subscription</span>
-                  <span className="material-symbols-outlined text-outline">chevron_right</span>
-                </li>
-                <li className="flex justify-between items-center py-2 border-b border-surface-container-highest cursor-pointer hover:text-primary transition-colors">
-                  <span>Data Privacy</span>
-                  <span className="material-symbols-outlined text-outline">chevron_right</span>
-                </li>
-              </ul>
+          {/* Left: Edit Profile */}
+          <div className="col-span-1 md:col-span-6">
+            <section className="bg-surface border border-outline-variant rounded-lg p-6 flex flex-col gap-6">
+              <h2 className="font-headline-md text-headline-md text-primary border-b border-outline-variant pb-2">Edit Profile</h2>
+              
+              <div className="flex flex-col gap-2">
+                <label className="font-label-md text-label-md text-primary">Display Name</label>
+                <input
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  className="w-full bg-surface border border-outline-variant rounded p-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-0 transition-colors"
+                  placeholder="Enter your display name"
+                  type="text"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="font-label-md text-label-md text-primary">Bio</label>
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  className="w-full bg-surface border border-outline-variant rounded p-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-0 transition-colors resize-none"
+                  placeholder="Tell us about yourself"
+                  rows="3"
+                />
+              </div>
+
+              <button
+                onClick={handleSave}
+                className="w-fit bg-primary-container text-on-primary font-label-md text-label-md px-6 py-2 rounded-full hover:opacity-90 transition-opacity"
+              >
+                {saved ? 'Saved!' : 'Save Changes'}
+              </button>
             </section>
           </div>
 
-          {/* Right Column: Connections & Stats */}
-          <div className="col-span-1 md:col-span-8 space-y-12">
-            {/* Platform Connections */}
-            <section>
-              <h2 className="font-headline-md text-headline-md text-primary mb-6 border-b border-outline-variant pb-2">Connected Platforms</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Connection Card */}
-                <div className="border border-outline-variant p-6 flex items-center justify-between bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
-                  <div className="flex items-center gap-4">
-                    <span className="material-symbols-outlined text-primary text-[32px]">photo_camera</span>
-                    <div>
-                      <h3 className="font-label-md text-label-md text-primary">Instagram</h3>
-                      <p className="font-label-sm text-label-sm text-on-surface-variant">@eleanor_v</p>
+          {/* Right: Connected Platforms */}
+          <div className="col-span-1 md:col-span-6">
+            <section className="bg-surface border border-outline-variant rounded-lg p-6 flex flex-col gap-6">
+              <h2 className="font-headline-md text-headline-md text-primary border-b border-outline-variant pb-2">Connected Platforms</h2>
+              
+              <div className="flex flex-col gap-3">
+                {[
+                  { name: 'Instagram', icon: 'photo_camera' },
+                  { name: 'LinkedIn', icon: 'work' },
+                  { name: 'X', icon: 'alternate_email' },
+                  { name: 'Facebook', icon: 'public' },
+                ].map((p) => (
+                  <div key={p.name} className="border border-outline-variant p-4 flex items-center justify-between bg-surface-container-lowest rounded hover:bg-surface-container-low transition-colors">
+                    <div className="flex items-center gap-3">
+                      <span className="material-symbols-outlined text-primary text-[24px]">{p.icon}</span>
+                      <h3 className="font-label-md text-label-md text-primary">{p.name}</h3>
                     </div>
+                    <button className="font-label-sm text-label-sm text-primary hover:underline">Connect</button>
                   </div>
-                  <span className="font-label-sm text-label-sm text-surface-tint border border-surface-tint px-3 py-1 rounded-full">Connected</span>
-                </div>
-                {/* Connection Card */}
-                <div className="border border-outline-variant p-6 flex items-center justify-between bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
-                  <div className="flex items-center gap-4">
-                    <span className="material-symbols-outlined text-primary text-[32px]">work</span>
-                    <div>
-                      <h3 className="font-label-md text-label-md text-primary">LinkedIn</h3>
-                      <p className="font-label-sm text-label-sm text-on-surface-variant">/in/eleanorvance</p>
-                    </div>
-                  </div>
-                  <span className="font-label-sm text-label-sm text-surface-tint border border-surface-tint px-3 py-1 rounded-full">Connected</span>
-                </div>
-                {/* Connection Card */}
-                <div className="border border-outline-variant p-6 flex items-center justify-between bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
-                  <div className="flex items-center gap-4">
-                    <span className="material-symbols-outlined text-primary text-[32px]">alternate_email</span>
-                    <div>
-                      <h3 className="font-label-md text-label-md text-primary">X</h3>
-                      <p className="font-label-sm text-label-sm text-on-surface-variant">@eleanorv_writes</p>
-                    </div>
-                  </div>
-                  <button className="font-label-sm text-label-sm text-primary hover:underline">Connect</button>
-                </div>
-                {/* Connection Card */}
-                <div className="border border-outline-variant p-6 flex items-center justify-between bg-surface-container-lowest hover:bg-surface-container-low transition-colors">
-                  <div className="flex items-center gap-4">
-                    <span className="material-symbols-outlined text-primary text-[32px]">public</span>
-                    <div>
-                      <h3 className="font-label-md text-label-md text-primary">Facebook</h3>
-                      <p className="font-label-sm text-label-sm text-on-surface-variant">Not connected</p>
-                    </div>
-                  </div>
-                  <button className="font-label-sm text-label-sm text-primary hover:underline">Connect</button>
-                </div>
-              </div>
-            </section>
-
-            {/* Usage Statistics (Bento Style) */}
-            <section>
-              <h2 className="font-headline-md text-headline-md text-primary mb-6 border-b border-outline-variant pb-2">Usage Insights</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="col-span-2 md:col-span-2 bg-surface-container p-6 border border-outline-variant">
-                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2">Generations this Month</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-display-lg text-display-lg text-primary">1,248</span>
-                    <span className="font-label-sm text-label-sm text-surface-tint">/ 2,000</span>
-                  </div>
-                  <div className="w-full h-1 bg-outline-variant mt-4">
-                    <div className="h-full bg-surface-tint w-3/5"></div>
-                  </div>
-                </div>
-                <div className="col-span-1 bg-surface-container p-6 border border-outline-variant flex flex-col justify-between">
-                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2">Saved Drafts</p>
-                  <span className="font-headline-md text-headline-md text-primary">42</span>
-                </div>
-                <div className="col-span-1 bg-surface-container p-6 border border-outline-variant flex flex-col justify-between">
-                  <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2">Active Campaigns</p>
-                  <span className="font-headline-md text-headline-md text-primary">3</span>
-                </div>
+                ))}
               </div>
             </section>
           </div>
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="bg-surface w-full py-8 mt-auto border-t border-outline-variant">
-        <div className="flex flex-col md:flex-row justify-between items-center px-margin-desktop max-w-container-max mx-auto gap-4">
+        <div className="flex justify-center px-8 max-w-[900px] mx-auto">
           <div className="font-label-md text-label-md font-bold text-primary">
-            © 2024 Social Generator. Editorial Precision by Design.
+            © 2024 Social Generator
           </div>
-          <nav className="flex gap-6 font-label-sm text-label-sm">
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
-          </nav>
         </div>
       </footer>
     </div>

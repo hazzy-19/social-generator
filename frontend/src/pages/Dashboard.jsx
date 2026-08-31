@@ -292,72 +292,7 @@ export default function Dashboard() {
           )}
         </section>
 
-        {/* SECTION 2: Past Generations Card */}
-        <section className="bg-surface border border-outline-variant rounded p-8 flex flex-col gap-6">
-          {/* Header & Filters */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <h2 className="font-headline-md text-headline-md text-primary">Past Generations</h2>
-            <div className="flex gap-4 w-full md:w-auto">
-              <div className="relative w-full md:w-64">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
-                <input className="w-full pl-10 pr-4 py-2 border border-outline-variant rounded bg-surface font-body-md text-body-md focus:border-primary focus:ring-0 transition-colors" placeholder="Search past posts..." type="text"/>
-              </div>
-              <select className="border border-outline-variant rounded bg-surface px-4 py-2 font-body-md text-body-md text-on-surface-variant focus:border-primary focus:ring-0 appearance-none pr-8 relative cursor-pointer hidden md:block">
-                <option>All Platforms</option>
-                <option>Instagram</option>
-                <option>LinkedIn</option>
-                <option>X</option>
-              </select>
-            </div>
-          </div>
-          
-          {/* List */}
-          <div className="flex flex-col">
-            {/* Item 1 */}
-            <div className="flex items-center gap-4 py-4 border-b border-outline-variant hover:bg-surface-container-lowest transition-colors px-2 -mx-2 rounded">
-              <img className="w-12 h-12 rounded object-cover border border-outline-variant bg-surface-container-high" alt="Thumbnail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdthTC1ZSyv_0g-6RYJr_GHY3dQ9e6UhB68sbEQifcY7VbEBePZYqwJxCwcxT27yAu0C4R4fIMNdKNB16zqUHijlqGm8pvn0SDMI0BirEXmeIVs_p_xQ7fw70ZkWWApyDHj6kOAXig9uO9hLLjVIjWqtsmhu_sgojThW2k9Z_fWXclG4Xqcgj398KqSxLpmktU22iiXV3-VJVVAhEcJDKaxA1DJtio2KmN9hOaPLT2sVyegLpxHZY"/>
-              <div className="flex flex-col gap-1 min-w-0 flex-1">
-                <div className="flex items-center gap-3">
-                  <span className="px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded font-label-sm text-label-sm text-[10px] uppercase tracking-wider">LinkedIn</span>
-                  <span className="font-label-sm text-label-sm text-on-surface-variant">2 hours ago</span>
-                  <span className="w-2 h-2 rounded-full bg-[#10b981] ml-auto md:ml-0" title="Approved"></span>
-                </div>
-                <p className="font-body-md text-body-md text-on-surface truncate">The future of design systems isn't just about components, it's about semantic...</p>
-              </div>
-              <button className="hidden md:block font-label-sm text-label-sm text-primary underline hover:opacity-70 transition-opacity whitespace-nowrap ml-4">Restore</button>
-            </div>
 
-            {/* Item 2 */}
-            <div className="flex items-center gap-4 py-4 border-b border-outline-variant hover:bg-surface-container-lowest transition-colors px-2 -mx-2 rounded">
-              <img className="w-12 h-12 rounded object-cover border border-outline-variant bg-surface-container-high" alt="Thumbnail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrZp6oxFVlojm6SIRjv4IUNfeslKSa3go9wNnbGht2RbbhVhCu6v_9hcXjbG3y6TxjEdCtzMPr4hMURe6pN9diwn4bPoKQjFMn4jJwrxcnRDWXbXYygR9zx3jLCqF_kPfV13k-Ucld6L22duoyhlUw92zE7fuAdlHARmOKSTjfAbo6D5p3TVtBY--GQDToygCb6LwfFNNVuiGzBJDBgcQ3nNdI3ifVQKLkqtySN3aIfhQZNnaMyNY"/>
-              <div className="flex flex-col gap-1 min-w-0 flex-1">
-                <div className="flex items-center gap-3">
-                  <span className="px-2 py-0.5 bg-surface-container-high text-on-surface rounded font-label-sm text-label-sm text-[10px] uppercase tracking-wider border border-outline-variant">Instagram</span>
-                  <span className="font-label-sm text-label-sm text-on-surface-variant">Yesterday</span>
-                  <span className="w-2 h-2 rounded-full bg-[#f59e0b] ml-auto md:ml-0" title="Draft"></span>
-                </div>
-                <p className="font-body-md text-body-md text-on-surface truncate">Finding beauty in the analog details. There is a certain permanence to ink that...</p>
-              </div>
-              <button className="hidden md:block font-label-sm text-label-sm text-primary underline hover:opacity-70 transition-opacity whitespace-nowrap ml-4">Restore</button>
-            </div>
-
-            {/* Item 3 */}
-            <div className="flex items-center gap-4 py-4 border-b border-outline-variant last:border-b-0 hover:bg-surface-container-lowest transition-colors px-2 -mx-2 rounded">
-              <div className="w-12 h-12 rounded border border-outline-variant bg-surface-container-high flex items-center justify-center text-on-surface-variant">
-                <span className="material-symbols-outlined text-[20px]">article</span>
-              </div>
-              <div className="flex flex-col gap-1 min-w-0 flex-1">
-                <div className="flex items-center gap-3">
-                  <span className="px-2 py-0.5 bg-surface-container-high text-on-surface rounded font-label-sm text-label-sm text-[10px] uppercase tracking-wider border border-outline-variant">X</span>
-                  <span className="font-label-sm text-label-sm text-on-surface-variant">Oct 24</span>
-                  <span className="w-2 h-2 rounded-full bg-[#10b981] ml-auto md:ml-0" title="Approved"></span>
-                </div>
-                <p className="font-body-md text-body-md text-on-surface truncate">Ship faster by reducing decisions. A robust style guide is your best constraint.</p>
-              </div>
-              <button className="hidden md:block font-label-sm text-label-sm text-primary underline hover:opacity-70 transition-opacity whitespace-nowrap ml-4">Restore</button>
-            </div>
-          </div>
-        </section>
       </main>
     </div>
   );

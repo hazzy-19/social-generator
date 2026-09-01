@@ -13,6 +13,12 @@ class GenerationCreateRequest(BaseModel):
     source_content: str = Field(..., max_length=50_000)
     platform: PlatformType
 
+class OptimizeSourceRequest(BaseModel):
+    source_content: str = Field(..., max_length=50_000)
+
+
+class OptimizeSourceResponse(BaseModel):
+    optimized_content: str
 
 
 class GenerationResponse(BaseModel):

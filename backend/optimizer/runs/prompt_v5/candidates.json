@@ -1,0 +1,22 @@
+{
+  "full_extraction": [
+    {
+      "id": "conservative",
+      "level": "conservative",
+      "text": "You are extracting social media content from source material.\n\nSource content:\n\"\"\"We just launched QuietFlow — an AI tool that helps remote teams stay in sync without endless meetings. Early users report saving 6+ hours per week.\"\"\"\n\nTarget platform: linkedin (hook-driven, thought-provoking, polarizing but professional, engaging)\n\nReturn ONLY valid JSON in this exact shape:\n{\n  \"image_query\": \"a 3-6 word visual search phrase describing an image that fits this content\",\n  \"hashtags\": [\"#Example\", \"#Tags\", \"#Here\"],\n  \"caption\": \"the platform-formatted caption text\"\n}",
+      "token_count": 126
+    },
+    {
+      "id": "moderate",
+      "level": "moderate",
+      "text": "You are extracting social media content from source material.\n\nSource content:\n\"We just launched QuietFlow — an AI tool that helps remote teams stay in sync without endless meetings. Early users report saving 6+ hours per week.\"\n\nTarget platform: LinkedIn (hook-driven, thought-provoking, polarizing but professional, engaging)\n\nReturn ONLY valid JSON in this exact shape:\n{\n  \"image_query\": \"a 3-6 word visual search phrase describing an image that fits this content\",\n  \"hashtags\": [\"#Example\", \"#Tags\", \"#Here\"],\n  \"caption\": \"the platform-formatted caption text\"\n}",
+      "token_count": 124
+    },
+    {
+      "id": "aggressive",
+      "level": "aggressive",
+      "text": "You are extracting social media content from source material.\n\nSource:\n\"We just launched QuietFlow — an AI tool that helps remote teams stay in sync without endless meetings. Early users report saving 6+ hours per week.\"\n\nReturn ONLY valid JSON in this exact shape:\n{\n  \"image_query\": \"a 3-6 word visual search phrase describing an image that fits this content\",\n  \"hashtags\": [\"#Example\", \"#Tags\", \"#Here\"],\n  \"caption\": \"the platform-formatted caption text\"\n}",
+      "token_count": 103
+    }
+  ]
+}

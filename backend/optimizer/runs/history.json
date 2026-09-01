@@ -1,0 +1,33 @@
+[
+  {
+    "event": "run",
+    "version": "prompt_v5",
+    "prompt_keys": [
+      "full_extraction"
+    ],
+    "summary": {
+      "winner": "aggressive",
+      "winner_score": 5.0
+    },
+    "at": "2026-08-31T23:00:53.668521+00:00"
+  },
+  {
+    "event": "run",
+    "version": "prompt_v6",
+    "prompt_keys": [
+      "full_extraction"
+    ],
+    "summary": {
+      "winner": "conservative",
+      "winner_score": 5.0
+    },
+    "at": "2026-08-31T23:05:57.618532+00:00"
+  },
+  {
+    "event": "approved",
+    "version": "prompt_v6",
+    "prompt_key": "full_extraction",
+    "candidate_id": "conservative",
+    "at": "2026-08-31T23:06:11.273698+00:00"
+  }
+]

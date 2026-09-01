@@ -11,18 +11,33 @@ from app.core.database import get_db
 from app.auth.dependencies import get_current_user
 from app.auth.models import User
 from app.generations import service
-from app.generations.schemas import GenerationCreateRequest, GenerationListItem, GenerationResponse
+from app.generations.schemas import GenerationCreateRequest, GenerationListItem, GenerationResponse, OptimizeSourceRequest, OptimizeSourceResponse
 from app.generations.service import Section
 from app.platforms.types import PlatformType
 from app.shared.exceptions import ExternalServiceError, NotFoundError
+from app.ai import extractor
 
 router = APIRouter(prefix="/generations", tags=["generations"])
 
 
-@router.post("", response_model=GenerationResponse, status_code=201)
+@router.post("/optimize-source", response_model=OptimizeSourceResponse)
+async def optimize_source(payload: OptimizeSourceRequest, current_user: User = Depends(get_current_user)):
+    try:
+        optimized = await extractor.optimize_source_content(payload.source_content)
+        return OptimizeSourceResponse(optimized_content=optimized)
+    except ExternalServiceError as e:
+        raise HTTPException(status_code=502, detail=str(e))
+
+
+from fastapi.responses import StreamingResponse
+
+@router.post("", status_code=201)
 async def create_generation(payload: GenerationCreateRequest, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
     try:
-        return await service.generate_new(db, current_user.id, payload.source_content, payload.platform)
+        return StreamingResponse(
+            service.stream_generation(db, current_user.id, payload.source_content, payload.platform),
+            media_type="text/event-stream"
+        )
     except ExternalServiceError as e:
         raise HTTPException(status_code=502, detail=str(e))
 

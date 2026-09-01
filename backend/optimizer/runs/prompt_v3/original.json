@@ -1,0 +1,7 @@
+{
+  "full_extraction": {
+    "text": "You are extracting social media content from source material.\n\nSource content:\n\"\"\"We just launched QuietFlow — an AI tool that helps remote teams stay in sync without endless meetings. Early users report saving 6+ hours per week.\"\"\"\n\nTarget platform: linkedin (hook-driven, thought-provoking, polarizing but professional, engaging)\nCaption MUST be 3000 characters or fewer, including spaces and punctuation.\n\nReturn ONLY valid JSON, no markdown fences, no preamble, in this exact shape:\n{\n  \"image_query\": \"a 3-6 word visual search phrase describing an image that fits this content\",\n  \"hashtags\": [\"#Example\", \"#Tags\", \"#Here\"],\n  \"caption\": \"the platform-formatted caption text\"\n}",
+    "token_count": 149,
+    "captured_at": "2026-08-31T22:46:29.313055+00:00"
+  }
+}

@@ -19,18 +19,21 @@ class FullExtraction:
     image_query: str
     hashtags: list[str]
     caption: str
+    prompt_used: str
 
 
 async def extract_all(source_content: str, platform: str, char_limit: int) -> FullExtraction:
     """Single call covering image query + hashtags + caption together,
     so the three outputs stay consistent with each other."""
+    prompt = prompts.full_extraction_prompt(source_content, platform, char_limit)
     try:
-        raw = await complete(prompts.full_extraction_prompt(source_content, platform, char_limit), max_tokens=700)
+        raw = await complete(prompt, max_tokens=700)
         data = _parse_json(raw)
         return FullExtraction(
             image_query=data["image_query"],
             hashtags=data["hashtags"],
             caption=data["caption"],
+            prompt_used=prompt,
         )
     except Exception as exc:
         print(f"WARNING: AI extraction failed, returning fallback: {exc}")
@@ -38,6 +41,7 @@ async def extract_all(source_content: str, platform: str, char_limit: int) -> Fu
             image_query="A clean, professional desk setup",
             hashtags=["#technology", "#innovation", "#future", "#growth"],
             caption=f"This is a fallback generated post for {platform} based on: {source_content[:50]}... \n\nWe are currently experiencing issues reaching the AI model.\n\nDEBUG ERROR INFO: {type(exc).__name__}: {str(exc)}",
+            prompt_used=prompt,
         )
 
 
@@ -65,6 +69,13 @@ async def extract_caption(source_content: str, platform: str, char_limit: int) -
         return await complete(prompts.caption_prompt(source_content, platform, char_limit), max_tokens=500)
     except Exception as exc:
         raise ExternalServiceError(f"AI caption extraction failed: {exc}") from exc
+
+
+async def optimize_source_content(source_content: str) -> str:
+    try:
+        return await complete(prompts.optimize_source_prompt(source_content), max_tokens=1000)
+    except Exception as exc:
+        raise ExternalServiceError(f"AI source optimization failed: {exc}") from exc
 
 
 def _parse_json(raw: str):

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "tc_001",
+    "platform": "linkedin",
+    "source_content": "We just launched QuietFlow — an AI tool that helps remote teams stay in sync without endless meetings. It integrates with Slack, Notion, and Google Calendar. Early users report saving 6+ hours per week.",
+    "expected_traits": ["hook-driven", "thought-provoking", "professional", "no preamble", "no explanation"]
+  },
+  {
+    "id": "tc_002",
+    "platform": "instagram",
+    "source_content": "Behind every great morning routine is a great cup of coffee. Our new single-origin Ethiopian Yirgacheffe blend is now available in limited quantities. Hand-picked, sun-dried, roasted fresh weekly.",
+    "expected_traits": ["visually evocative", "high-energy", "hashtag-friendly", "emojis", "catchy"]
+  },
+  {
+    "id": "tc_003",
+    "platform": "x",
+    "source_content": "Study shows that 73% of developers prefer async communication over meetings, yet most companies still schedule 3+ hours of meetings per day. The data is clear. The behavior hasn't changed.",
+    "expected_traits": ["punchy", "controversial", "fast-paced", "no fluff", "under 280 chars"]
+  },
+  {
+    "id": "tc_004",
+    "platform": "facebook",
+    "source_content": "Our local animal shelter rescued 42 dogs last month. They're all vaccinated, microchipped, and ready for their forever homes. Adoption fees are waived this weekend only. Come meet them!",
+    "expected_traits": ["conversational", "community-engaging", "relatable", "attention-grabbing", "call to action"]
+  },
+  {
+    "id": "tc_005",
+    "platform": "linkedin",
+    "source_content": "I failed my first startup. We ran out of runway after 18 months. Here's the one mistake I made that I see every founder repeat: we optimized for growth before we had product-market fit.",
+    "expected_traits": ["hook-driven", "personal", "polarizing but professional", "engaging", "story format"]
+  },
+  {
+    "id": "tc_006",
+    "platform": "instagram",
+    "source_content": "The new Nike Air Max 2025 colorway just dropped. Inspired by solar eclipses, it features gradient soles shifting from deep indigo to burnt orange. Limited to 500 pairs globally.",
+    "expected_traits": ["catchy", "high-energy", "visually evocative", "hashtag-friendly", "FOMO-inducing"]
+  }
+]

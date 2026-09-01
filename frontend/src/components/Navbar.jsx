@@ -33,11 +33,11 @@ export default function Navbar() {
         </a>
       </nav>
       <div className="flex gap-4">
-        <Link to="/profile" className="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-70">
+        <Link to="/settings" className="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-70" title="Settings">
           <span className="material-symbols-outlined">settings</span>
         </Link>
         <button onClick={handleLogout} className="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:opacity-70" title="Logout">
-          <span className="material-symbols-outlined">account_circle</span>
+          <span className="material-symbols-outlined">logout</span>
         </button>
       </div>
     </header>

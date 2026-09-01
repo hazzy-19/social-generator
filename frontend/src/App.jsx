@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
-import Profile from './pages/Profile';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -25,8 +25,8 @@ function App() {
             element={<History />} 
           />
           <Route 
-            path="/profile" 
-            element={<Profile />} 
+            path="/settings" 
+            element={<Settings />} 
           />
         </Routes>
       </AuthProvider>

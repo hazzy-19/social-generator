@@ -21,6 +21,7 @@ dependencies = [
 dev = [
     "pytest==9.1.1",
     "pytest-asyncio==1.4.0",
+    "tiktoken>=0.7.0",   # accurate token counting for the offline optimizer
 ]
 
 [build-system]

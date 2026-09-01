@@ -35,14 +35,47 @@ export default function Dashboard() {
     };
   };
 
+  const [optimizing, setOptimizing] = useState(false);
+
+  const handleOptimize = async () => {
+    if (!topic) return;
+    setOptimizing(true);
+    setError('');
+    
+    try {
+      const headers = await getAuthHeaders();
+      const response = await fetch('http://127.0.0.1:8000/generations/optimize-source', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          source_content: topic,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setTopic(data.optimized_content);
+      } else {
+        console.error("Failed to optimize:", data);
+        setError(data.detail || "Optimization failed.");
+      }
+    } catch (error) {
+      console.error("Error during optimization:", error);
+      setError("We are currently experiencing issues reaching the AI model.");
+    } finally {
+      setOptimizing(false);
+    }
+  };
+
+  const [generationStatus, setGenerationStatus] = useState('');
+
   const handleGenerate = async () => {
     if (!topic) return;
     setLoading(true);
     setError('');
+    setGenerationStatus('Connecting to server...');
     
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 120000); // 120s timeout
-
     try {
       const headers = await getAuthHeaders();
       const response = await fetch('http://127.0.0.1:8000/generations', {
@@ -51,29 +84,72 @@ export default function Dashboard() {
         body: JSON.stringify({
           source_content: topic,
           platform: platform
-        }),
-        signal: controller.signal
+        })
       });
-      clearTimeout(timeoutId);
       
-      const data = await response.json();
+      if (!response.ok) {
+        let errorMsg = "Failed to generate";
+        try {
+            const data = await response.json();
+            errorMsg = data.detail || errorMsg;
+        } catch (e) {}
+        throw new Error(errorMsg);
+      }
       
-      if (response.ok) {
-        setGenerationId(data.id);
-        setCaption(data.caption);
-        setHashtags(data.hashtags);
-        setImageUrl(data.image_url);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
         
-        setImageApproved(data.image_approved);
-        setCaptionApproved(data.caption_approved);
-        setHashtagsApproved(data.hashtags_approved);
-      } else {
-        console.error("Failed to generate:", data);
-        setError(data.detail || "We are currently experiencing issues reaching the AI model.");
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        
+        // Keep the last partial line in the buffer
+        buffer = lines.pop();
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const dataStr = line.substring(6);
+            if (!dataStr.trim()) continue;
+            
+            try {
+              const data = JSON.parse(dataStr);
+              if (data.status === 'error') {
+                setError(data.message);
+                setGenerationStatus('');
+              } else if (data.status === 'prompt_ready') {
+                setTopic(data.prompt);
+              } else if (data.status === 'thinking') {
+                setGenerationStatus(prev => {
+                   if (prev === 'Connecting to AI model...' || prev === 'Connecting to server...' || prev.startsWith('AI finished')) return data.chunk;
+                   return prev + data.chunk;
+                });
+              } else if (data.status === 'complete') {
+                setGenerationId(data.data.id);
+                setTopic(data.data.source_content);
+                setCaption(data.data.caption);
+                setHashtags(data.data.hashtags);
+                setImageUrl(data.data.image_url);
+                setImageApproved(data.data.image_approved);
+                setCaptionApproved(data.data.caption_approved);
+                setHashtagsApproved(data.data.hashtags_approved);
+                setGenerationStatus('');
+              } else {
+                setGenerationStatus(data.message);
+              }
+            } catch (e) {
+              console.error("Error parsing stream chunk:", e, dataStr);
+            }
+          }
+        }
       }
     } catch (error) {
       console.error("Error during generation:", error);
-      setError("We are currently experiencing issues reaching the AI model.");
+      setError(error.message || "We are currently experiencing issues reaching the AI model.");
+      setGenerationStatus('');
     } finally {
       setLoading(false);
     }
@@ -183,13 +259,28 @@ export default function Dashboard() {
                 {error}
               </div>
             )}
-            <button 
-              onClick={handleGenerate} 
-              disabled={loading}
-              className="mt-2 w-fit bg-primary-container text-on-primary font-label-md text-label-md py-2 px-6 rounded hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              {loading ? 'Generating...' : 'Generate Post'}
-            </button>
+            <div className="flex gap-4 mt-2 items-center">
+              <button 
+                onClick={handleGenerate} 
+                disabled={loading || optimizing}
+                className="w-fit bg-primary-container text-on-primary font-label-md text-label-md py-2 px-6 rounded hover:opacity-90 transition-opacity disabled:opacity-50"
+              >
+                {loading ? 'Generating...' : 'Generate Post'}
+              </button>
+              <button 
+                onClick={handleOptimize} 
+                disabled={loading || optimizing}
+                className="w-fit border border-primary text-primary font-label-md text-label-md py-2 px-6 rounded hover:bg-surface-container-low transition-colors disabled:opacity-50"
+              >
+                {optimizing ? 'Optimizing...' : 'Optimize Input ✨'}
+              </button>
+              {loading && generationStatus && (
+                <div className="ml-4 font-body-md text-primary flex items-center gap-2 animate-pulse">
+                  <span className="material-symbols-outlined text-[18px]">sync</span>
+                  {generationStatus}
+                </div>
+              )}
+            </div>
           </div>
 
           <hr className="border-t border-outline-variant w-full opacity-50" />

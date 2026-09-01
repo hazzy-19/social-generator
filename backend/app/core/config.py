@@ -10,6 +10,13 @@ class Settings(BaseSettings):
     # Database
     database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/quiet_authority"
 
+    # AI Provider routing ("gemini" or "nvidia")
+    ai_provider: str = "nvidia"
+
+    # Gemini AI endpoint
+    gemini_api_key: str = ""
+    gemini_model: str = "gemini-3.6-flash"
+
     # NVIDIA AI endpoint
     nvidia_api_key: str = ""
     nvidia_api_base_url: str = "https://integrate.api.nvidia.com/v1"
@@ -17,6 +24,7 @@ class Settings(BaseSettings):
 
     # image-service (Node wrapper around pexelkit)
     image_service_url: str = "http://localhost:4000"
+    pexels_api_key: str = ""
 
     # App
     environment: str = "development"

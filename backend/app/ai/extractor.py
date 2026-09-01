@@ -66,16 +66,30 @@ async def extract_hashtags(source_content: str, platform: str) -> list[str]:
 
 async def extract_caption(source_content: str, platform: str, char_limit: int) -> str:
     try:
-        return await complete(prompts.caption_prompt(source_content, platform, char_limit), max_tokens=500)
+        raw = await complete(prompts.caption_prompt(source_content, platform, char_limit), max_tokens=500)
+        return sanitize_dashes(raw)
     except Exception as exc:
         raise ExternalServiceError(f"AI caption extraction failed: {exc}") from exc
 
 
 async def optimize_source_content(source_content: str) -> str:
     try:
-        return await complete(prompts.optimize_source_prompt(source_content), max_tokens=1000)
+        raw = await complete(prompts.optimize_source_prompt(source_content), max_tokens=1000)
+        return sanitize_dashes(raw)
     except Exception as exc:
         raise ExternalServiceError(f"AI source optimization failed: {exc}") from exc
+
+
+def sanitize_dashes(text: str) -> str:
+    """Removes em dashes (—) and en dashes (–), replacing them with commas, colons, or standard hyphens."""
+    if not text:
+        return text
+    # Replace ' — ' or ' – ' with comma or colon, and standalone dashes with commas
+    cleaned = text.replace(" — ", ", ").replace(" – ", ", ")
+    cleaned = cleaned.replace("—", ", ").replace("–", "-")
+    # Fix any double commas or awkward spacing created
+    cleaned = re.sub(r",\s*,+", ",", cleaned)
+    return cleaned.strip()
 
 
 def _parse_json(raw: str):
@@ -84,4 +98,12 @@ def _parse_json(raw: str):
     match = _JSON_FENCE_RE.search(cleaned)
     if match:
         cleaned = match.group(1).strip()
-    return json.loads(cleaned)
+    data = json.loads(cleaned)
+    if isinstance(data, dict):
+        if "caption" in data and isinstance(data["caption"], str):
+            data["caption"] = sanitize_dashes(data["caption"])
+        if "image_query" in data and isinstance(data["image_query"], str):
+            data["image_query"] = sanitize_dashes(data["image_query"])
+        if "hashtags" in data and isinstance(data["hashtags"], list):
+            data["hashtags"] = [sanitize_dashes(tag) for tag in data["hashtags"]]
+    return data

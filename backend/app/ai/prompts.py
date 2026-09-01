@@ -53,6 +53,7 @@ Copywriting & Voice Rules:
 2. Rhythm: 'Short. Breathe. Land.' — short sentences, intentional whitespace, zero fluff.
 3. Specificity: Specific numbers and clear takeaways beat vague generic claims.
 4. Hook: Open with a compelling hook (curiosity gap, contrarian observation, story beat, or high-value insight).
+5. NO EM DASHES: NEVER use em dashes (—) or en dashes (–) anywhere in the output. Use commas, periods, colons, or natural line breaks instead.
 
 Platform Playbook:
 {platform_guide}
@@ -92,6 +93,7 @@ Playbook:
 {platform_guide}
 
 Voice: 'Smart friend who figured something out', 'Short. Breathe. Land.' cadence.
+CRITICAL: NEVER use em dashes (—) or en dashes (–). Use commas, periods, or colons instead.
 MUST be {char_limit} characters or fewer, including spaces and punctuation.
 Return ONLY the caption text, nothing else."""
 def optimize_source_prompt(source_content: str) -> str:

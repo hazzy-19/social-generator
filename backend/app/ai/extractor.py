@@ -27,7 +27,7 @@ async def extract_all(source_content: str, platform: str, char_limit: int) -> Fu
     so the three outputs stay consistent with each other."""
     prompt = prompts.full_extraction_prompt(source_content, platform, char_limit)
     try:
-        raw = await complete(prompt, max_tokens=700)
+        raw = await complete(prompt)
         data = _parse_json(raw)
         return FullExtraction(
             image_query=data["image_query"],
@@ -47,14 +47,14 @@ async def extract_all(source_content: str, platform: str, char_limit: int) -> Fu
 
 async def extract_image_query(source_content: str) -> str:
     try:
-        return await complete(prompts.image_query_prompt(source_content), max_tokens=30)
+        return await complete(prompts.image_query_prompt(source_content))
     except Exception as exc:
         raise ExternalServiceError(f"AI image query extraction failed: {exc}") from exc
 
 
 async def extract_hashtags(source_content: str, platform: str) -> list[str]:
     try:
-        raw = await complete(prompts.hashtags_prompt(source_content, platform), max_tokens=100)
+        raw = await complete(prompts.hashtags_prompt(source_content, platform))
         return _parse_json(raw)
     except (json.JSONDecodeError, TypeError) as exc:
         raise ExternalServiceError(f"AI returned unparseable hashtags: {exc}") from exc
@@ -66,7 +66,7 @@ async def extract_hashtags(source_content: str, platform: str) -> list[str]:
 
 async def extract_caption(source_content: str, platform: str, char_limit: int) -> str:
     try:
-        raw = await complete(prompts.caption_prompt(source_content, platform, char_limit), max_tokens=500)
+        raw = await complete(prompts.caption_prompt(source_content, platform, char_limit))
         return sanitize_dashes(raw)
     except Exception as exc:
         raise ExternalServiceError(f"AI caption extraction failed: {exc}") from exc
@@ -74,7 +74,7 @@ async def extract_caption(source_content: str, platform: str, char_limit: int) -
 
 async def optimize_source_content(source_content: str) -> str:
     try:
-        raw = await complete(prompts.optimize_source_prompt(source_content), max_tokens=1000)
+        raw = await complete(prompts.optimize_source_prompt(source_content))
         return sanitize_dashes(raw)
     except Exception as exc:
         raise ExternalServiceError(f"AI source optimization failed: {exc}") from exc

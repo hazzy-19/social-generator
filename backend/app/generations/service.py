@@ -43,7 +43,7 @@ async def stream_generation(db: AsyncSession, user_id: uuid.UUID, source_content
         # 1. Stream tokens from the model
         raw_response = ""
         try:
-            async for chunk in complete_stream(prompt, max_tokens=700):
+            async for chunk in complete_stream(prompt):
                 raw_response += chunk
                 yield f"data: {json.dumps({'status': 'thinking', 'chunk': chunk})}\n\n"
         except Exception as exc:

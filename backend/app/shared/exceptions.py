@@ -12,3 +12,8 @@ class NotFoundError(Exception):
 class ExternalServiceError(Exception):
     """Raised when an external call (NVIDIA API, image-service) fails unrecoverably."""
     pass
+
+
+class RateLimitedError(Exception):
+    """Raised when a user hits the generation rate limit."""
+    pass

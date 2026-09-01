@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
+import PostPreview from './pages/PostPreview';
 import Settings from './pages/Settings';
 
 function App() {
@@ -23,6 +24,10 @@ function App() {
           <Route 
             path="/history" 
             element={<History />} 
+          />
+          <Route 
+            path="/history/:id" 
+            element={<PostPreview />} 
           />
           <Route 
             path="/settings" 

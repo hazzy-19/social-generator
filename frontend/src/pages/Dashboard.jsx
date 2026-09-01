@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 
+function useSessionState(key, initialValue) {
+  const [state, setState] = useState(() => {
+    try {
+      const stored = sessionStorage.getItem(key);
+      return stored !== null ? JSON.parse(stored) : initialValue;
+    } catch (e) {
+      return initialValue;
+    }
+  });
+  useEffect(() => {
+    sessionStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
+  return [state, setState];
+}
+
 export default function Dashboard() {
-  const { currentUser } = useAuth();
-  const [topic, setTopic] = useState('');
-  const [platform, setPlatform] = useState('linkedin');
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
+  const [topic, setTopic] = useSessionState('dashboard_topic', '');
+  const [platform, setPlatform] = useSessionState('dashboard_platform', 'linkedin');
   const [loading, setLoading] = useState(false);
   
-  const [caption, setCaption] = useState('');
-  const [hashtags, setHashtags] = useState([]);
-  const [imageUrl, setImageUrl] = useState('');
+  const [caption, setCaption] = useSessionState('dashboard_caption', '');
+  const [hashtags, setHashtags] = useSessionState('dashboard_hashtags', []);
+  const [imageUrl, setImageUrl] = useSessionState('dashboard_imageUrl', '');
   
-  const [generationId, setGenerationId] = useState(null);
-  const [imageApproved, setImageApproved] = useState(false);
-  const [captionApproved, setCaptionApproved] = useState(false);
-  const [hashtagsApproved, setHashtagsApproved] = useState(false);
+  const [generationId, setGenerationId] = useSessionState('dashboard_generationId', null);
+  const [imageApproved, setImageApproved] = useSessionState('dashboard_imageApproved', false);
+  const [captionApproved, setCaptionApproved] = useSessionState('dashboard_captionApproved', false);
+  const [hashtagsApproved, setHashtagsApproved] = useSessionState('dashboard_hashtagsApproved', false);
 
   const platforms = [
     { id: 'instagram', label: 'Instagram' },
@@ -27,12 +44,22 @@ export default function Dashboard() {
   const [error, setError] = useState('');
 
   const getAuthHeaders = async () => {
-    if (!currentUser) return { 'Content-Type': 'application/json' };
-    const token = await currentUser.getIdToken();
-    return {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    };
+    if (!currentUser) {
+      await logout();
+      navigate('/login');
+      throw new Error("Session expired. Please log in again.");
+    }
+    try {
+      const token = await currentUser.getIdToken();
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+    } catch (err) {
+      await logout();
+      navigate('/login');
+      throw new Error("Session expired. Please log in again.");
+    }
   };
 
   const [optimizing, setOptimizing] = useState(false);
@@ -49,20 +76,53 @@ export default function Dashboard() {
         headers,
         body: JSON.stringify({
           source_content: topic,
+          platform: platform
         }),
       });
       
-      const data = await response.json();
+      if (!response.ok) {
+        let errorMsg = "Failed to optimize";
+        try {
+            const data = await response.json();
+            errorMsg = data.detail || errorMsg;
+        } catch (e) {}
+        throw new Error(errorMsg);
+      }
       
-      if (response.ok) {
-        setTopic(data.optimized_content);
-      } else {
-        console.error("Failed to optimize:", data);
-        setError(data.detail || "Optimization failed.");
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        
+        buffer = lines.pop();
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const dataStr = line.substring(6);
+            if (!dataStr.trim()) continue;
+            
+            try {
+              const data = JSON.parse(dataStr);
+              if (data.status === 'error') {
+                setError(data.message);
+              } else if (data.status === 'complete') {
+                setTopic(data.data.optimized_content);
+              }
+            } catch (e) {
+              console.error("Error parsing stream chunk:", e, dataStr);
+            }
+          }
+        }
       }
     } catch (error) {
       console.error("Error during optimization:", error);
-      setError("We are currently experiencing issues reaching the AI model.");
+      setError(error.message || "We are currently experiencing issues reaching the AI model.");
     } finally {
       setOptimizing(false);
     }
@@ -107,7 +167,6 @@ export default function Dashboard() {
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
         
-        // Keep the last partial line in the buffer
         buffer = lines.pop();
         
         for (const line of lines) {
@@ -120,16 +179,10 @@ export default function Dashboard() {
               if (data.status === 'error') {
                 setError(data.message);
                 setGenerationStatus('');
-              } else if (data.status === 'prompt_ready') {
-                setTopic(data.prompt);
               } else if (data.status === 'thinking') {
-                setGenerationStatus(prev => {
-                   if (prev === 'Connecting to AI model...' || prev === 'Connecting to server...' || prev.startsWith('AI finished')) return data.chunk;
-                   return prev + data.chunk;
-                });
+                setGenerationStatus('Thinking...');
               } else if (data.status === 'complete') {
                 setGenerationId(data.data.id);
-                setTopic(data.data.source_content);
                 setCaption(data.data.caption);
                 setHashtags(data.data.hashtags);
                 setImageUrl(data.data.image_url);
@@ -137,6 +190,8 @@ export default function Dashboard() {
                 setCaptionApproved(data.data.caption_approved);
                 setHashtagsApproved(data.data.hashtags_approved);
                 setGenerationStatus('');
+              } else if (data.status === 'prompt_ready') {
+                // Ignore prompt_ready, do not show raw AI prompt in UI
               } else {
                 setGenerationStatus(data.message);
               }
@@ -149,79 +204,77 @@ export default function Dashboard() {
     } catch (error) {
       console.error("Error during generation:", error);
       setError(error.message || "We are currently experiencing issues reaching the AI model.");
-      setGenerationStatus('');
     } finally {
       setLoading(false);
+      setGenerationStatus('');
     }
   };
 
   const handleReload = async (section) => {
     if (!generationId) return;
+    setLoading(true);
+    setError('');
+    
     try {
       const headers = await getAuthHeaders();
       const response = await fetch(`http://127.0.0.1:8000/generations/${generationId}/reload/${section}`, {
         method: 'POST',
         headers
       });
+      
+      if (!response.ok) throw new Error("Failed to reload " + section);
       const data = await response.json();
-      if (response.ok) {
-        if (section === 'image') {
-          setImageUrl(data.image_url);
-          setImageApproved(data.image_approved);
-        } else if (section === 'caption') {
-          setCaption(data.caption);
-          setCaptionApproved(data.caption_approved);
-        } else if (section === 'hashtags') {
-          setHashtags(data.hashtags);
-          setHashtagsApproved(data.hashtags_approved);
-        }
-      } else {
-        console.error(`Failed to reload ${section}:`, data);
-      }
+      
+      if (section === 'caption') setCaption(data.caption);
+      if (section === 'hashtags') setHashtags(data.hashtags);
+      if (section === 'image') setImageUrl(data.image_url);
     } catch (error) {
-      console.error(`Error reloading ${section}:`, error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleApprove = async (section) => {
     if (!generationId) return;
+    setLoading(true);
+    
     try {
       const headers = await getAuthHeaders();
       const response = await fetch(`http://127.0.0.1:8000/generations/${generationId}/approve/${section}`, {
         method: 'POST',
         headers
       });
-      const data = await response.json();
-      if (response.ok) {
-        if (section === 'image') setImageApproved(true);
-        if (section === 'caption') setCaptionApproved(true);
-        if (section === 'hashtags') setHashtagsApproved(true);
-      } else {
-        console.error(`Failed to approve ${section}:`, data);
-      }
+      
+      if (!response.ok) throw new Error("Failed to approve " + section);
+      
+      if (section === 'caption') setCaptionApproved(true);
+      if (section === 'hashtags') setHashtagsApproved(true);
+      if (section === 'image') setImageApproved(true);
     } catch (error) {
-      console.error(`Error approving ${section}:`, error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSave = async () => {
     if (!generationId) return;
+    setLoading(true);
+    
     try {
       const headers = await getAuthHeaders();
       const response = await fetch(`http://127.0.0.1:8000/generations/${generationId}/save`, {
         method: 'POST',
         headers
       });
-      const data = await response.json();
-      if (response.ok) {
-        alert("Post saved successfully!");
-      } else {
-        console.error("Failed to save post:", data);
-        alert("Failed to save post: " + (data.detail || "Unknown error"));
-      }
+      
+      if (!response.ok) throw new Error("Failed to save generation");
+      navigate('/history');
     } catch (error) {
-      console.error("Error saving post:", error);
-      alert("Error saving post.");
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -232,10 +285,10 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen text-on-background font-body-md py-12 px-4 md:px-8">
+    <div className="bg-surface-container-low min-h-screen flex flex-col font-body-md text-on-surface">
       <Navbar />
       
-      <main className="max-w-[900px] mx-auto flex flex-col gap-8 mt-8">
+      <main className="flex-grow w-full max-w-[900px] mx-auto px-4 md:px-0 pt-6 pb-12 flex flex-col gap-8">
         {/* SECTION 1: Generator Card */}
         <section className="bg-surface border border-outline-variant rounded p-8 flex flex-col gap-8">
           {/* Header */}
@@ -285,14 +338,14 @@ export default function Dashboard() {
                 disabled={loading || optimizing}
                 className="w-fit bg-primary-container text-on-primary font-label-md text-label-md py-2 px-6 rounded hover:opacity-90 transition-opacity disabled:opacity-50"
               >
-                {loading ? 'Generating...' : 'Generate Post'}
+                {loading ? 'Generating...' : 'Generate'}
               </button>
               <button 
                 onClick={handleOptimize} 
                 disabled={loading || optimizing}
                 className="w-fit border border-primary text-primary font-label-md text-label-md py-2 px-6 rounded hover:bg-surface-container-low transition-colors disabled:opacity-50"
               >
-                {optimizing ? 'Optimizing...' : 'Optimize Input ✨'}
+                {optimizing ? 'Optimizing...' : 'Optimize Input'}
               </button>
               {loading && generationStatus && (
                 <div className="ml-4 font-body-md text-primary flex items-center gap-2 animate-pulse">
@@ -333,7 +386,7 @@ export default function Dashboard() {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-4">
                     <label className="font-label-md text-label-md text-primary">Caption</label>
-                    <button onClick={() => handleReload('caption')} disabled={loading} className="font-label-sm text-label-sm text-primary underline hover:opacity-70 transition-opacity">✨ Regenerate</button>
+                    <button onClick={() => handleReload('caption')} disabled={loading} className="font-label-sm text-label-sm text-primary underline hover:opacity-70 transition-opacity">Regenerate</button>
                   </div>
                   <div className="flex items-center gap-2">
                     <button onClick={() => handleApprove('caption')} disabled={loading} className={`flex items-center gap-2 px-3 py-1.5 border rounded-full font-label-sm text-label-sm transition-colors ${captionApproved ? 'bg-primary text-on-primary border-primary' : 'border-primary text-primary hover:bg-surface-container-low'}`}>
@@ -372,7 +425,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {hashtags.map((tag, idx) => (
+                    {(hashtags || []).map((tag, idx) => (
                       <span key={idx} className="px-3 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full font-label-sm text-label-sm">
                         {tag.startsWith('#') ? tag : `#${tag}`}
                       </span>

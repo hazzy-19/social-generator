@@ -6,7 +6,8 @@ import {
   signOut, 
   onAuthStateChanged,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  signInAnonymously as firebaseSignInAnonymously
 } from 'firebase/auth';
 
 const AuthContext = createContext();
@@ -32,6 +33,10 @@ export function AuthProvider({ children }) {
     return signInWithPopup(auth, provider);
   }
 
+  function signInAnonymously() {
+    return firebaseSignInAnonymously(auth);
+  }
+
   function logout() {
     return signOut(auth);
   }
@@ -50,6 +55,7 @@ export function AuthProvider({ children }) {
     signup,
     login,
     signInWithGoogle,
+    signInAnonymously,
     logout
   };
 

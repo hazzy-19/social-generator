@@ -17,7 +17,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-surface w-full top-0 sticky border-b border-outline-variant flex justify-between items-center h-16 px-margin-desktop max-w-container-max mx-auto mb-12 z-50 bg-white/80 backdrop-blur-sm shadow-sm border-surface-dim">
+    <header className="bg-surface w-full top-0 sticky border-b border-outline-variant flex justify-between items-center h-16 px-margin-desktop max-w-container-max mx-auto z-50 bg-white/80 backdrop-blur-sm shadow-sm border-surface-dim">
       <div className="font-headline-md text-headline-md font-semibold text-primary" style={{ color: '#002627' }}>
         Social Generator
       </div>

@@ -75,20 +75,22 @@ export default function History() {
     saved: 'Saved',
   };
 
-  const handleRestore = (gen) => {
-    // Navigate to dashboard and pass generation data via state
-    navigate('/', { state: { generation: gen } });
-  };
-
-  const handleDownload = (gen) => {
-    const text = `${gen.caption || ''}\n\n${(gen.hashtags || []).join(' ')}`;
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${gen.platform}_post_${gen.id.slice(0, 8)}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
+    try {
+      const headers = {};
+      if (currentUser) {
+        const token = await currentUser.getIdToken();
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      const res = await fetch(`${API}/generations/${id}`, { method: 'DELETE', headers });
+      if (res.ok) {
+        setGenerations(generations.filter(g => g.id !== id));
+      }
+    } catch (err) {
+      console.error('Failed to delete post:', err);
+    }
   };
   
   const getFullImageUrl = (url) => {
@@ -101,7 +103,7 @@ export default function History() {
     <div className="bg-surface-container-low min-h-screen flex flex-col font-body-md text-on-surface">
       <Navbar />
       
-      <main className="flex-grow w-full max-w-[900px] mx-auto px-4 md:px-0 py-12">
+      <main className="flex-grow w-full max-w-[900px] mx-auto px-4 md:px-0 pt-6 pb-12">
         <div className="bg-surface border border-outline-variant rounded-lg">
           {/* Header */}
           <div className="p-6 border-b border-outline-variant flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -146,7 +148,11 @@ export default function History() {
               </div>
             ) : (
               generations.map((gen) => (
-                <div key={gen.id} className="flex flex-col md:flex-row items-start md:items-center p-6 border-b border-outline-variant hover:bg-surface-container-lowest transition-colors gap-4 md:gap-6">
+                <div 
+                  key={gen.id} 
+                  onClick={() => navigate(`/history/${gen.id}`)}
+                  className="flex flex-col md:flex-row gap-4 p-4 border border-outline-variant rounded bg-surface hover:bg-surface-container-low transition-colors items-start md:items-center cursor-pointer"
+                >
                   {/* Thumbnail */}
                   {gen.image_url ? (
                     <img
@@ -180,17 +186,11 @@ export default function History() {
                   {/* Actions */}
                   <div className="flex items-center gap-3 shrink-0 mt-2 md:mt-0">
                     <button
-                      onClick={() => handleDownload(gen)}
-                      className="p-2 border border-outline-variant rounded-full text-on-surface-variant hover:text-primary hover:border-primary transition-colors"
-                      title="Download"
+                      onClick={(e) => handleDelete(e, gen.id)}
+                      className="p-2 border border-error/30 rounded-full text-error hover:bg-error/10 transition-colors"
+                      title="Delete"
                     >
-                      <span className="material-symbols-outlined text-[18px]">download</span>
-                    </button>
-                    <button
-                      onClick={() => handleRestore(gen)}
-                      className="font-label-sm text-label-sm text-primary underline hover:opacity-70 transition-opacity whitespace-nowrap"
-                    >
-                      Restore
+                      <span className="material-symbols-outlined text-[18px]">delete</span>
                     </button>
                   </div>
                 </div>

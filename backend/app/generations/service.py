@@ -34,7 +34,18 @@ async def stream_generation(db: AsyncSession, user_id: uuid.UUID, source_content
         from app.ai.client import complete_stream
         from app.ai.extractor import _parse_json, FullExtraction
         
-        prompt = prompts.full_extraction_prompt(source_content, platform, char_limit)
+        from app.core.config import settings
+        from app.ai.search import build_grounded_context
+        
+        enriched_source = source_content
+        if settings.tavily_api_key:
+            yield f"data: {json.dumps({'status': 'searching', 'message': 'Gathering live web context...'})}\n\n"
+            topic = source_content[:150].strip()
+            context = await build_grounded_context(topic, settings.tavily_api_key)
+            if context:
+                enriched_source = f"{context}\n\n{source_content}"
+
+        prompt = prompts.full_extraction_prompt(enriched_source, platform, char_limit)
         
         yield f"data: {json.dumps({'status': 'prompt_ready', 'prompt': prompt})}\n\n"
         
@@ -55,6 +66,9 @@ async def stream_generation(db: AsyncSession, user_id: uuid.UUID, source_content
         yield f"data: {json.dumps({'status': 'generating_image', 'message': 'AI finished thinking! Fetching related image...'})}\n\n"
         
         # 2. Parse response
+        from app.ai.extractor import record_call
+        record_call(str(user_id))
+        
         try:
             data = _parse_json(raw_response)
             extraction = FullExtraction(
@@ -142,14 +156,28 @@ async def approve_section(db: AsyncSession, user_id: uuid.UUID, generation_id: u
     return await repository.update(db, generation)
 
 
-async def save(db: AsyncSession, user_id: uuid.UUID, generation_id: uuid.UUID) -> SocialGeneration:
+async def save(db: AsyncSession, user_id: uuid.UUID, generation_id: uuid.UUID, updates: dict) -> SocialGeneration:
     generation = await _get_or_raise(db, generation_id, user_id)
+    if "caption" in updates:
+        generation.caption = updates["caption"]
+    if "hashtags" in updates:
+        generation.hashtags = updates["hashtags"]
+    
     generation.status = GenerationStatus.saved
     return await repository.update(db, generation)
 
 
 async def list_past(db: AsyncSession, user_id: uuid.UUID, platform: str | None, search: str | None, offset: int = 0) -> list[SocialGeneration]:
     return await repository.list_recent(db, user_id=user_id, platform=platform, search=search, offset=offset)
+
+
+async def get_generation(db: AsyncSession, user_id: uuid.UUID, generation_id: uuid.UUID) -> SocialGeneration:
+    return await _get_or_raise(db, generation_id, user_id)
+
+
+async def delete_generation(db: AsyncSession, user_id: uuid.UUID, generation_id: uuid.UUID) -> None:
+    generation = await _get_or_raise(db, generation_id, user_id)
+    await repository.delete(db, generation)
 
 
 async def _get_or_raise(db: AsyncSession, generation_id: uuid.UUID, user_id: uuid.UUID) -> SocialGeneration:

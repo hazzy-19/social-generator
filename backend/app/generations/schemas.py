@@ -21,6 +21,11 @@ class OptimizeSourceResponse(BaseModel):
     optimized_content: str
 
 
+class GenerationUpdateRequest(BaseModel):
+    caption: str | None = None
+    hashtags: list[str] | None = None
+
+
 class GenerationResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

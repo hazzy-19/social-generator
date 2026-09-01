@@ -39,11 +39,20 @@ export default function Signup() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-background relative">
+      {/* Back Button */}
+      <button 
+        onClick={() => navigate(-1)}
+        className="absolute top-6 left-6 flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-label-md"
+      >
+        <span className="material-symbols-outlined">arrow_back</span>
+        Back
+      </button>
+      
       <div className="w-full max-w-md bg-surface-container-lowest border border-outline-variant/30 rounded-lg shadow-sm p-8 md:p-12">
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="font-headline-lg text-headline-lg text-primary mb-2">The Quiet Authority</h1>
+          <h1 className="font-headline-lg text-headline-lg text-primary mb-2">Social Generator</h1>
           <p className="font-headline-md text-headline-md text-on-surface">Create your account</p>
         </div>
         

@@ -18,7 +18,7 @@ export default function Settings() {
     <div className="bg-background text-on-background min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow w-full max-w-[900px] mx-auto px-4 md:px-8 py-12">
+      <main className="flex-grow w-full max-w-[900px] mx-auto px-4 md:px-8 pt-6 pb-12">
         {/* Profile Header */}
         <section className="mb-12 flex flex-col md:flex-row items-start md:items-center gap-8">
           <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shrink-0 border border-outline-variant bg-surface-container-high flex items-center justify-center">

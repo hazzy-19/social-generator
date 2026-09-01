@@ -17,11 +17,9 @@ configure_logging()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     yield
-    # Gracefully close shared HTTP clients on shutdown.
-    from app.ai.client import http_client as ai_http
-    from app.images.client import http_client as img_http
-    await ai_http.aclose()
-    await img_http.aclose()
+    # Gracefully close shared AI client on shutdown.
+    from app.ai.client import deepseek_client
+    await deepseek_client.close()
 
 
 app = FastAPI(title="The Quiet Authority — Social Generator API", lifespan=lifespan)

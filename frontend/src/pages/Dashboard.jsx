@@ -244,6 +244,26 @@ export default function Dashboard() {
             <p className="font-body-md text-body-md text-on-surface-variant">Paste or write source content, then generate a platform-ready post.</p>
           </div>
 
+          {/* Platform Tabs */}
+          <div className="flex flex-col gap-2">
+            <label className="font-label-md text-label-md text-primary">Target Platform</label>
+            <div className="flex flex-wrap gap-2 p-1 bg-surface-container-low rounded inline-flex w-fit">
+              {platforms.map(p => (
+                <button 
+                  key={p.id}
+                  onClick={() => setPlatform(p.id)}
+                  className={`px-6 py-2 rounded font-label-md text-label-md transition-colors ${
+                    platform === p.id 
+                    ? 'bg-surface border border-outline-variant shadow-sm text-primary' 
+                    : 'text-on-surface-variant hover:text-primary'
+                  }`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Source Input */}
           <div className="flex flex-col gap-2">
             <label className="font-label-md text-label-md text-primary">Source Content</label>
@@ -281,25 +301,6 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
-          </div>
-
-          <hr className="border-t border-outline-variant w-full opacity-50" />
-
-          {/* Platform Tabs */}
-          <div className="flex gap-2 p-1 bg-surface-container-low rounded inline-flex w-fit">
-            {platforms.map(p => (
-              <button 
-                key={p.id}
-                onClick={() => setPlatform(p.id)}
-                className={`px-6 py-2 rounded font-label-md text-label-md transition-colors ${
-                  platform === p.id 
-                  ? 'bg-surface border border-outline-variant shadow-sm text-primary' 
-                  : 'text-on-surface-variant hover:text-primary'
-                }`}
-              >
-                {p.label}
-              </button>
-            ))}
           </div>
 
           {/* Two-Column Layout */}

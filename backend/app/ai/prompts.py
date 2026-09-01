@@ -2,29 +2,64 @@
 Prompt templates only. One function per extraction type. No HTTP calls here.
 """
 
-PLATFORM_TONE = {
-    "instagram": "catchy, visually evocative, high-energy, hashtag-friendly, use emojis",
-    "linkedin": "hook-driven, thought-provoking, polarizing but professional, engaging",
-    "x": "punchy, controversial hook, baiting, fast-paced, no fluff",
-    "facebook": "conversational, community-engaging, relatable, attention-grabbing hooks",
+PLATFORM_STRATEGY = {
+    "linkedin": (
+        "LinkedIn Thought-Leadership & Direct Response:\n"
+        "- Hook in first 1-2 lines before 'see more' (curiosity, contrarian take, or specific metric).\n"
+        "- 'Short. Breathe. Land.' cadence: one thought per sentence, generous line breaks for scanning.\n"
+        "- Break down insights with tactical pointers (e.g. ↳).\n"
+        "- Peer-to-peer tone ('smart friend who figured something out'), specific > vague.\n"
+        "- End with a single low-friction discussion question."
+    ),
+    "x": (
+        "Twitter/X Viral & Punchy Style:\n"
+        "- Strong pattern interrupt or contrarian hook in the opening words.\n"
+        "- Fast-paced, punchy, zero fluff or corporate jargon.\n"
+        "- Short lines, high emotional resonance or counter-intuitive insight.\n"
+        "- Clear, scroll-stopping takeaway."
+    ),
+    "instagram": (
+        "Instagram Visual & Engaging Style:\n"
+        "- Visually evocative opening line that grabs attention immediately.\n"
+        "- Story-driven or bulleted value with aesthetic spacing.\n"
+        "- Strong call-to-action (Save this for later / Share with a friend).\n"
+        "- Use relevant emojis naturally."
+    ),
+    "facebook": (
+        "Facebook Community & Conversational Style:\n"
+        "- Relatable, authentic storytelling with an emotional setup.\n"
+        "- Conversational phrasing that invites discussion and comments.\n"
+        "- Friendly, accessible, non-academic tone."
+    ),
 }
 
 
 def full_extraction_prompt(source_content: str, platform: str, char_limit: int) -> str:
     if "You are extracting social media content from source material." in source_content:
         return source_content
+
+    platform_guide = PLATFORM_STRATEGY.get(platform, PLATFORM_STRATEGY.get("linkedin", ""))
         
-    return f"""You are extracting social media content from source material.
+    return f"""You are an elite social media copywriter and viral strategist extracting high-performing content.
 
 Source content:
 \"\"\"{source_content}\"\"\"
 
-Target platform: {platform} ({PLATFORM_TONE.get(platform, "")})
-Caption MUST be {char_limit} characters or fewer, including spaces and punctuation.
+Target Platform: {platform.upper()}
+Character Limit: Caption MUST be {char_limit} characters or fewer (including spaces & punctuation).
+
+Copywriting & Voice Rules:
+1. Voice: 'Smart friend who figured something out' (authentic, helpful, specific, non-preachy).
+2. Rhythm: 'Short. Breathe. Land.' — short sentences, intentional whitespace, zero fluff.
+3. Specificity: Specific numbers and clear takeaways beat vague generic claims.
+4. Hook: Open with a compelling hook (curiosity gap, contrarian observation, story beat, or high-value insight).
+
+Platform Playbook:
+{platform_guide}
 
 Return ONLY valid JSON, no markdown fences, no preamble, in this exact shape:
 {{
-  "image_query": "a 3-6 word visual search phrase describing an image that fits this content",
+  "image_query": "a 3-6 word visual search phrase describing a relevant, high-quality stock photo",
   "hashtags": ["#Example", "#Tags", "#Here"],
   "caption": "the platform-formatted caption text"
 }}"""
@@ -47,10 +82,16 @@ Return ONLY a JSON array of strings, e.g. ["#Example", "#Tags"]"""
 
 
 def caption_prompt(source_content: str, platform: str, char_limit: int) -> str:
-    return f"""Write a {platform} caption ({PLATFORM_TONE.get(platform, "")}) based on this content:
+    platform_guide = PLATFORM_STRATEGY.get(platform, PLATFORM_STRATEGY.get("linkedin", ""))
+    return f"""You are an elite social media copywriter.
+Write a high-converting {platform.upper()} caption based on this content:
 
 \"\"\"{source_content}\"\"\"
 
+Playbook:
+{platform_guide}
+
+Voice: 'Smart friend who figured something out', 'Short. Breathe. Land.' cadence.
 MUST be {char_limit} characters or fewer, including spaces and punctuation.
 Return ONLY the caption text, nothing else."""
 def optimize_source_prompt(source_content: str) -> str:
